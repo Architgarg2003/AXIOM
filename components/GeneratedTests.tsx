@@ -32,12 +32,12 @@ const GeneratedTests = () => {
   const [search,setSearch] = useState("");
   const [embeddings, setEmbeddings] = useState(null);
 
-  const createEmbedding = useAction(api.createEmbedding.createEmbedings);
+  const createEmbedding = useAction(api.createEmbedding.createEmbeddings);
   
   const handleSearch = async () => {
     if (search.trim()) {
       try {
-        const result = await createEmbedding({ search: search });
+        const result = await createEmbedding({ text: search });
         setEmbeddings(result);
         console.log("Embeddings:", result);
       } catch (error) {

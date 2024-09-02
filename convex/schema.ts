@@ -1,59 +1,108 @@
+// import { defineSchema, defineTable } from "convex/server";
 // import { v } from "convex/values";
 
 // export default defineSchema({
-//         messages: defineTable({
-//                 author: v.string(),
-//                 body: v.string(),
-//             }),
-//         });
-
-//         convex/schema.ts
-//         import { defineSchema, defineTable, s } from "convex/schema";
-
-
-
-//main schema working -1 
-import { defineSchema, defineTable } from "convex/server";
-import { v } from "convex/values";
-// export default defineSchema({
 //     cards: defineTable({
-//         difficultyLevel: v.string(), // One of "Easy", "Medium", "Hard"
-//         companyName: v.string(),     // Example: "Google", "Facebook", etc.
-//         jobTitle: v.string(),       // Example: "Data Scientist", "Software Engineer", etc.
-//         technicalTags: v.array(v.string()), // Example: ["Python", "Java", "C++"], max 3 elements
-//         numberOfQuestions: v.number(), // Number of questions between 10-20
+//         userId: v.string(),
+//         jobTitle: v.string(),
+//         companyName: v.string(),
+//         jobDescription: v.string(),
+//         resume: v.string(),
+//         difficultyLevel: v.string(),
+//         tags: v.array(v.string()),
+//         createdAt: v.string(),
+//         updatedAt: v.string(),
+//         embedding: v.array(v.float64()),
+//     }).vectorIndex("by_embedding", {
+//         vectorField: "embedding",
+//         dimensions: 1536,
+//         filterFields: ["jobTitle","difficultyLevel", "companyName", "jobTitle", "tags"],
+//     }),
+
+
+//     Test: defineTable({
+//         userId: v.string(),
+//         date: v.string(), // Assuming you want to store multiple dates
+//         QuestionSet: v.array(
+//             v.object({
+//                 answer: v.string(),
+//                 options: v.array(v.string()),
+//                 question: v.string(),
+//             })
+//         ),
 //     }),
 // });
 
 
 
+   
 
 
+// FEATURED CARDS
 
-
-
-
-
-
-// import { defineSchema, defineTable } from "convex/server";
-
-
-
-
-
-// import { v } from "convex/values";
+import { defineSchema, defineTable } from "convex/server";
+import { v } from "convex/values";
 
 export default defineSchema({
     cards: defineTable({
-        difficultyLevel: v.string(),
-        companyName: v.string(),
-        jobTitle: v.string(),
-        technicalTags: v.array(v.string()),
-        numberOfQuestions: v.number(),
-        embedding: v.array(v.float64()), // Add this line
+        tags: v.array(v.string()),           // Array of strings for tags
+        difficultyLevel: v.string(),         // String for difficulty level
+        companyName: v.string(),             // String for company name
+        jobTitle: v.string(),                // String for job title
+        createdAt: v.string(),               // String for creation timestamp
+        updatedAt: v.string(),               // String for update timestamp
+        jobDescription: v.string(),          // String for job description
+        starsCount: v.int64(),               // Integer for stars count
+        userId: v.string(),                  // String for user ID
+        testId: v.string(),                  // String for test ID
+    }),
+
+    // test
+    Test: defineTable({
+            userId: v.string(),
+            date: v.string(), // Assuming you want to store multiple dates
+            QuestionSet: v.array(
+                v.object({
+                    answer: v.string(),
+                    options: v.array(v.string()),
+                    question: v.string(),
+                })
+            ),
+        }),
+
+
+
+    // GENERATED CARDS
+
+
+    generatedCards: defineTable({
+        tags: v.array(v.string()),             // Array of strings for tags
+        companyName: v.string(),               // String for company name
+        jobTitle: v.string(),                  // String for job title
+        jobDescription: v.string(),            // String for job description
+        starsCount: v.int64(),                 // Integer for stars count
+        userId: v.string(),                    // String for user ID
+        testId: v.string(),                    // String for test ID
+        upvoteCount: v.int64(),                // Integer for upvote count
+        resume: v.string(),                    // String for resume
+        difficultyLevel: v.string(),           // String for difficulty level
+        createdAt: v.string(),           // String for difficulty level
+        embeddings: v.array(v.float64())    // Embeddings for companyName, jobTitle, and tags
     }).vectorIndex("by_embedding", {
-        vectorField: "embedding",
-        dimensions: 1536, // Adjust based on your embedding model
-        filterFields: ["difficultyLevel", "companyName", "jobTitle", "numberOfQuestions"],
+        vectorField: "embeddings",
+        dimensions: 1536,                      // Adjust dimensions based on your embedding size
+        filterFields: ["jobTitle"],
     }),
 });
+
+
+
+
+// GENERATED CARDS
+
+// import { defineSchema, defineTable } from "convex/server";
+// import { v } from "convex/values";
+
+// export default defineSchema({
+   
+// });

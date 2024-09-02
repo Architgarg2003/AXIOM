@@ -14,6 +14,8 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as CreateCard from "../CreateCard.js";
+import type * as GetTags from "../GetTags.js";
 import type * as createEmbedding from "../createEmbedding.js";
 import type * as create_mcq from "../create_mcq.js";
 import type * as openai from "../openai.js";
@@ -27,6 +29,8 @@ import type * as openai from "../openai.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  CreateCard: typeof CreateCard;
+  GetTags: typeof GetTags;
   createEmbedding: typeof createEmbedding;
   create_mcq: typeof create_mcq;
   openai: typeof openai;

@@ -23,24 +23,84 @@ import { Label } from "@/components/ui/label"
 import { Plus } from "lucide-react"
 import { Button } from "./ui/button"
 import { api } from "../convex/_generated/api"
-import { useAction } from "convex/react"
+import { useAction, useMutation } from "convex/react"
 import { useState } from "react"
 import { pdfToText } from 'pdf-ts'
+import { useAuth } from "@clerk/clerk-react"
 
 const NewModal = () => {
+    const {userId} = useAuth();
     const [questions, setQuestions] = useState<any>(null)
-    const [jd, setJd] = useState<string>("")
+    const [jobDescription, setJd] = useState<string>("")
     const [resume, setResume] = useState<string>("")
     const [jobTitle, setJobTitle] = useState<string>("")
     const [companyName, setCompanyName] = useState<string>("")
     const [difficulty, setDifficulty] = useState<string>("")
-    const createQuestions = useAction(api.create_mcq.get_mcq)
+    const generateMCQ = useAction(api.create_mcq.generateMCQ);
+    const pushMCQ = useMutation(api.create_mcq.push_mcq);
+    const generateTags = useAction(api.GetTags.getTags);
+    const createCards = useMutation(api.CreateCard.Create_card);
+    const createEmbedding =  useAction(api.createEmbedding.createEmbeddings)
 
-    const generateMCQ = async () => {
+    const handleGenerateMCQ = async () => {
+
         try {
-            const result = await createQuestions({ jobTitle, jobDescription: jd, resume, difficulty, companyName })
-            setQuestions(result)
-            console.log("questions:", result)
+            if (!userId) {
+                console.error("User ID is not available");
+                return;
+            }
+
+            const mcqArray = await generateMCQ({ jobTitle, jobDescription, resume, difficulty, companyName })
+            setQuestions(mcqArray);
+            console.log(mcqArray);
+
+            const tags = await generateTags({ questions: mcqArray });
+            console.log(tags);
+
+          
+            const testId = await pushMCQ({
+                userId: userId,
+                mcqArray: mcqArray,
+            });
+            console.log("testId: ",testId);
+
+            if (!testId) {
+                console.error("test not pushed");
+                return;
+            }
+            
+            // const jobTitleEmbeddings = await createEmbedding({text:jobTitle})
+
+            let jobTitleEmbedding;
+            let embeddingsArray; // Declare embeddingsArray here
+            try {
+                jobTitleEmbedding = await createEmbedding({ text: jobTitle });
+                console.log(jobTitleEmbedding?.values);
+                if (!jobTitleEmbedding || !jobTitleEmbedding?.values) {
+                    throw new Error('Invalid embedding response');
+                }
+                embeddingsArray = Array.isArray(jobTitleEmbedding?.values)
+                    ? jobTitleEmbedding.values
+                    : [jobTitleEmbedding.values];
+            } catch (error) {
+                console.error("Error creating embedding:", error);
+                return;
+            }
+
+
+            const cardId = await createCards({
+                tags,
+                companyName,
+                jobTitle,
+                jobDescription,
+                userId,
+                testId,
+                resume,
+                difficulty,
+                jobTitleEmbeddings: embeddingsArray
+            });
+            console.log("cardId: ", cardId);
+
         } catch (error) {
             console.error("Error creating questions:", error)
         }
@@ -141,7 +201,7 @@ const NewModal = () => {
                     <Button
                         className="bg-[#141414] rounded-full text-white p-3"
                         size="sm"
-                        onClick={generateMCQ}
+                        onClick={handleGenerateMCQ}
                     >
                         Start
                     </Button>
