@@ -5,28 +5,40 @@ import Heading from '@/components/ui/Heading';
 import { Separator } from '@/components/ui/separator';
 import React, { useState, useEffect } from 'react';
 import Proctor from '../../Proctor';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Modals from '../../components/Modals';
+import { api } from "../../../../convex/_generated/api"
+import { useQuery,useMutation } from "convex/react";
+import Loader from '@/components/ui/Loader';
+import { useLoader } from '@/app/LoaderContext';
+import { useAuth } from '@clerk/clerk-react';
 
-const questions = [
-    { id: 1, question: 'What is the capital of France?', options: ['Berlin', 'Madrid', 'Paris', 'Rome'], answer: 2 },
-    { id: 2, question: 'Which planet is known as the Red Planet?', options: ['Earth', 'Mars', 'Jupiter', 'Venus'], answer: 1 },
-    { id: 3, question: 'What is the largest ocean on Earth?', options: ['Atlantic Ocean', 'Indian Ocean', 'Pacific Ocean', 'Arctic Ocean'], answer: 2 },
-    { id: 4, question: 'Who wrote "Hamlet"?', options: ['Charles Dickens', 'J.K. Rowling', 'William Shakespeare', 'Mark Twain'], answer: 2 },
-    { id: 5, question: 'Who wrote "Hamlet"?', options: ['Charles Dickens', 'J.K. Rowling', 'William Shakespeare', 'Mark Twain'], answer: 2 },
-    { id: 6, question: 'Who wrote "Hamlet"?', options: ['Charles Dickens', 'J.K. Rowling', 'William Shakespeare', 'Mark Twain'], answer: 2 },
-    { id: 7, question: 'Who wrote "Hamlet"?', options: ['Charles Dickens', 'J.K. Rowling', 'William Shakespeare', 'Mark Twain'], answer: 2 },
-    // Add more questions as needed
-];
 
 const TestPage = () => {
+    const {userId} = useAuth();
+    const { testId } = useParams();
+    const testIdString = Array.isArray(testId) ? testId[0] : testId;
+    const test = useQuery(api.GetTest.getTestById, { testId: testIdString as string });
+    const pushTestAnswer = useMutation(api.pushAnswer.push_test_answer);
+
     const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [selectedAnswers, setSelectedAnswers] = useState<number[]>(new Array(questions.length).fill(-1));
+    const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]); // Specify type as number[]
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutes
     const [showExitModal, setShowExitModal] = useState(false);
-
+    const [isLoading, setIsLoading] = useState(true);
+    const { showLoader, hideLoader } = useLoader();
 
     const router = useRouter();
+
+    useEffect(() => {
+        showLoader();
+        if (test && test.QuestionSet) {
+            setIsLoading(false);
+            setSelectedAnswers(new Array(test.QuestionSet.length).fill(-1));
+            hideLoader();
+        }
+    }, [test]);
+
     useEffect(() => {
         const timer = setInterval(() => {
             setTimeLeft(prevTime => {
@@ -39,7 +51,6 @@ const TestPage = () => {
             });
         }, 1000);
 
-        // Add popstate event listener
         window.history.pushState(null, '', window.location.href);
         window.addEventListener('popstate', handlePopState);
 
@@ -49,7 +60,7 @@ const TestPage = () => {
         };
     }, []);
 
-    const handlePopState = (event: PopStateEvent) => {
+    const handlePopState = (event:any) => {
         event.preventDefault();
         setShowExitModal(true);
         window.history.pushState(null, '', window.location.href);
@@ -57,26 +68,62 @@ const TestPage = () => {
 
     const handleExitConfirm = () => {
         setShowExitModal(false);
-        router.push('/exploreTest'); // Navigate to instructions page
+        router.push('/exploreTest');
     };
 
     const handleExitCancel = () => {
         setShowExitModal(false);
     };
 
-    const handleOptionChange = (index: number) => {
+    const handleOptionChange = (index:number) => {
         const updatedAnswers = [...selectedAnswers];
         updatedAnswers[currentQuestion] = index;
         setSelectedAnswers(updatedAnswers);
     };
 
-    const handleQuestionClick = (index: number) => {
+    const handleQuestionClick = (index:number) => {
         setCurrentQuestion(index);
     };
+// handle submit
+    const handleSubmit = async () => {
+        showLoader();
+        if (!test || !test.QuestionSet) {
+            console.error("Test data is not available");
+            return;
+        }
+        if(!userId){
+            console.error("UserId is not available");
+            return;
+        }
 
-    const handleSubmit = () => {
-        window.location.href = `/test/[id]/result`;
-        // Logic to submit the test and calculate results
+        const answerSet = test.QuestionSet.map((question, index) => ({
+            question: question.question,
+            userAnswer: question.options[selectedAnswers[index]] || "",
+            correctAnswer: question.options[parseInt(question.answer) - 1] || "",
+            providedOptions: question.options
+        }));
+
+        try {
+            const answerId = await pushTestAnswer({
+                userId: userId, // Replace with actual user ID
+                testId: testIdString,
+                answerSet: answerSet
+            });
+
+            console.log(answerId);
+
+            // Navigate to the result page after successful submission
+            if (answerId){
+                router.push(`/${testId}/start/${answerId}`);
+            }
+
+        } catch (error) {
+            console.error("Error submitting test:", error);
+            // Handle error (e.g., show an error message to the user)
+        }
+        finally{
+            hideLoader();
+        }
     };
 
     const handleAutoSubmit = () => {
@@ -84,11 +131,19 @@ const TestPage = () => {
         handleSubmit();
     };
 
-    const formatTime = (seconds: number) => {
+    const formatTime = (seconds:number) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
         return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
     };
+
+    if (isLoading) {
+        return (
+           <Loader/>
+        );
+    }
+
+    const currentQuestionData = test?.QuestionSet[currentQuestion]; // Use optional chaining
 
     return (
         <Proctor onAutoSubmit={handleAutoSubmit}>
@@ -105,8 +160,8 @@ const TestPage = () => {
                     <div className='flex flex-row items-start justify-between pt-5 gap-5 h-[70%] '>
                         <div className="bg-slate-200 h-full  w-[60%] p-20 rounded-xl">
                             <div className="question-side">
-                                <h2>{`Question ${currentQuestion + 1}: ${questions[currentQuestion].question}`}</h2>
-                                {questions[currentQuestion].options.map((option, index) => (
+                                <h2>{`Question ${currentQuestion + 1}: ${currentQuestionData?.question}`}</h2>
+                                {currentQuestionData?.options.map((option, index) => (
                                     <div key={index}>
                                         <input
                                             type="radio"
@@ -121,7 +176,7 @@ const TestPage = () => {
                         </div>
                         <div className='bg-slate-200 h-full w-[40%] rounded-xl'>
                             <div className=" p-20  grid gap-8 grid-cols-4">
-                                {questions.map((_, index) => {
+                                {test?.QuestionSet.map((_, index) => {
                                     const isSelected = selectedAnswers[index] !== -1;
                                     const isActive = currentQuestion === index;
                                     const buttonColor = isActive
@@ -153,8 +208,8 @@ const TestPage = () => {
                                 Previous
                             </Button>
                             <Button
-                                onClick={() => setCurrentQuestion((prev) => Math.min(prev + 1, questions.length - 1))}
-                                disabled={currentQuestion === questions.length - 1}
+                                onClick={() => setCurrentQuestion((prev) => Math.min(prev + 1, (test?.QuestionSet?.length ?? 0) - 1))}
+                                disabled={currentQuestion === (test?.QuestionSet?.length ?? 0) - 1}
                             >
                                 Next
                             </Button>
@@ -163,8 +218,9 @@ const TestPage = () => {
                 </div>
             </div>
             {showExitModal && (
-                <Modals head='Exit Test' alert='Are you sure you want to exit the test? Your progress will be lost.' action={handleExitConfirm} button='Exit'  />
+                <Modals head='Exit Test' alert='Are you sure you want to exit the test? Your progress will be lost.' action={handleExitConfirm} button='Exit' />
             )}
+            <Loader/>
         </Proctor>
     );
 };

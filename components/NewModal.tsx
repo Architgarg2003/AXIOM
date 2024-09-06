@@ -1,4 +1,4 @@
-"use client"
+// "use client"
 import {
     Dialog,
     DialogContent,
@@ -22,88 +22,27 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Plus } from "lucide-react"
 import { Button } from "./ui/button"
-import { api } from "../convex/_generated/api"
-import { useAction, useMutation } from "convex/react"
-import { useState } from "react"
 import { pdfToText } from 'pdf-ts'
-import { useAuth } from "@clerk/clerk-react"
+import { useState } from "react"
+// import { useDialog } from "@/components/ui/dialog"
 
-const NewModal = () => {
-    const {userId} = useAuth();
-    const [questions, setQuestions] = useState<any>(null)
-    const [jobDescription, setJd] = useState<string>("")
-    const [resume, setResume] = useState<string>("")
-    const [jobTitle, setJobTitle] = useState<string>("")
-    const [companyName, setCompanyName] = useState<string>("")
-    const [difficulty, setDifficulty] = useState<string>("")
-    const generateMCQ = useAction(api.create_mcq.generateMCQ);
-    const pushMCQ = useMutation(api.create_mcq.push_mcq);
-    const generateTags = useAction(api.GetTags.getTags);
-    const createCards = useMutation(api.CreateCard.Create_card);
-    const createEmbedding =  useAction(api.createEmbedding.createEmbeddings)
+interface NewModalI{
+    setJd:(e:any)=>void,
+    setResume: (e: any)=>void,
+    setJobTitle: (e: any)=>void,
+    setDifficulty: (e: any)=>void,
+    setCompanyName: (e: any)=>void,
+    handleGenerateMCQ:()=>void,
 
-    const handleGenerateMCQ = async () => {
+} 
 
-        try {
-            if (!userId) {
-                console.error("User ID is not available");
-                return;
-            }
+const NewModal = ({ handleGenerateMCQ, setJd, setResume, setJobTitle, setDifficulty, setCompanyName }: NewModalI) => {
+    // const { open, setOpen } = useDialog();
+    const [open, setOpen] = useState(false);
 
-            const mcqArray = await generateMCQ({ jobTitle, jobDescription, resume, difficulty, companyName })
-            setQuestions(mcqArray);
-            console.log(mcqArray);
-
-            const tags = await generateTags({ questions: mcqArray });
-            console.log(tags);
-
-          
-            const testId = await pushMCQ({
-                userId: userId,
-                mcqArray: mcqArray,
-            });
-            console.log("testId: ",testId);
-
-            if (!testId) {
-                console.error("test not pushed");
-                return;
-            }
-            
-            // const jobTitleEmbeddings = await createEmbedding({text:jobTitle})
-
-            let jobTitleEmbedding;
-            let embeddingsArray; // Declare embeddingsArray here
-            try {
-                jobTitleEmbedding = await createEmbedding({ text: jobTitle });
-                console.log(jobTitleEmbedding?.values);
-                if (!jobTitleEmbedding || !jobTitleEmbedding?.values) {
-                    throw new Error('Invalid embedding response');
-                }
-                embeddingsArray = Array.isArray(jobTitleEmbedding?.values)
-                    ? jobTitleEmbedding.values
-                    : [jobTitleEmbedding.values];
-            } catch (error) {
-                console.error("Error creating embedding:", error);
-                return;
-            }
-
-
-            const cardId = await createCards({
-                tags,
-                companyName,
-                jobTitle,
-                jobDescription,
-                userId,
-                testId,
-                resume,
-                difficulty,
-                jobTitleEmbeddings: embeddingsArray
-            });
-            console.log("cardId: ", cardId);
-
-        } catch (error) {
-            console.error("Error creating questions:", error)
-        }
+    const handleStart = ()=>{
+        handleGenerateMCQ();
+        setOpen(false)
     }
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, setter: React.Dispatch<React.SetStateAction<string>>) => {
@@ -121,7 +60,7 @@ const NewModal = () => {
     }
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button
                     className='bg-black rounded-full text-white capitalize inline-flex'
@@ -201,7 +140,7 @@ const NewModal = () => {
                     <Button
                         className="bg-[#141414] rounded-full text-white p-3"
                         size="sm"
-                        onClick={handleGenerateMCQ}
+                        onClick={handleStart}
                     >
                         Start
                     </Button>

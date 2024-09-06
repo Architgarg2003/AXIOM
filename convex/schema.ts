@@ -93,6 +93,20 @@ export default defineSchema({
         dimensions: 1536,                      // Adjust dimensions based on your embedding size
         filterFields: ["jobTitle"],
     }),
+
+
+    TestAnswer: defineTable({
+        userId: v.string(),
+        testId: v.string(),
+        date: v.string(), // Store date as a string in ISO format (e.g., "2023-09-05T12:34:56Z")
+        answerSet: v.array(v.object({
+            question: v.string(),
+            userAnswer: v.string(),
+            correctAnswer: v.string(),
+            providedOptions: v.array(v.string()) // Array of strings for the provided options
+        }))
+    }),
+
 });
 
 

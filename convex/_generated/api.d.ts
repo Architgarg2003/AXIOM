@@ -16,9 +16,13 @@ import type {
 } from "convex/server";
 import type * as CreateCard from "../CreateCard.js";
 import type * as GetTags from "../GetTags.js";
+import type * as GetTest from "../GetTest.js";
+import type * as GetUserAnswer from "../GetUserAnswer.js";
 import type * as createEmbedding from "../createEmbedding.js";
 import type * as create_mcq from "../create_mcq.js";
+import type * as getAllGeneratedCards from "../getAllGeneratedCards.js";
 import type * as openai from "../openai.js";
+import type * as pushAnswer from "../pushAnswer.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -31,9 +35,13 @@ import type * as openai from "../openai.js";
 declare const fullApi: ApiFromModules<{
   CreateCard: typeof CreateCard;
   GetTags: typeof GetTags;
+  GetTest: typeof GetTest;
+  GetUserAnswer: typeof GetUserAnswer;
   createEmbedding: typeof createEmbedding;
   create_mcq: typeof create_mcq;
+  getAllGeneratedCards: typeof getAllGeneratedCards;
   openai: typeof openai;
+  pushAnswer: typeof pushAnswer;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

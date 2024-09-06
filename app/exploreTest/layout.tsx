@@ -1,7 +1,6 @@
 // "use client"
 import { SidebarDemo } from "@/components/SidebarDemo";
-import { useAuth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
+import { LoaderProvider } from "../LoaderContext";
 
 
 export default async function DashboardLayout({
@@ -19,11 +18,13 @@ export default async function DashboardLayout({
 
     return (
         <div className="flex overflow-hidden">
-            <SidebarDemo>
-                <div className="flex-1 h-screen overflow-y-scroll overflow-hidden rounded-l-xl bg-gray-200">
-                    {children}
-                </div>
-            </SidebarDemo>
+            <LoaderProvider>
+                <SidebarDemo>
+                    <div className="flex-1 h-screen overflow-y-scroll overflow-hidden rounded-l-xl bg-gray-200">
+                        {children}
+                    </div>
+                </SidebarDemo>
+            </LoaderProvider>
         </div>
 
     );

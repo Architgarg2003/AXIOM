@@ -127,6 +127,7 @@ import { action } from "./_generated/server";
 import { v } from "convex/values";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
+
 export const generateMCQ = action({
   args: {
     jobTitle: v.string(),
@@ -140,6 +141,7 @@ export const generateMCQ = action({
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `
+
       Generate a set of 10 to 20 multiple-choice questions (MCQs) based on the given job title, job description, and the user's resume. Each MCQ should consist of the following:
 
       1. A question related to the skills, qualifications, or experience required for the job.

@@ -5,6 +5,7 @@ import { ConvexClientProvider } from './ConvexClientProvider'
 import { cn } from '@/lib/utils'
 import { SidebarDemo } from '@/components/SidebarDemo'
 import 'regenerator-runtime/runtime';
+import { LoaderProvider } from './LoaderContext'
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -31,7 +32,9 @@ export default function RootLayout({
                     )}
                 >
                     <ConvexClientProvider>
-                        {children}
+                        <LoaderProvider>
+                            {children}
+                        </LoaderProvider>
                     </ConvexClientProvider>
                 </body>
             </html>
