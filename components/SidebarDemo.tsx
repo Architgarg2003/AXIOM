@@ -42,8 +42,8 @@ export function SidebarDemo({ children }: SidebarProps) {
             icon: <ListStart className="text-white dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
         },
         {
-            label: "Logout",
-            href: "#",
+            label: "Forum",
+            href: "/Forum",
             icon: <IconArrowLeft className="text-white dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
         },
     ], []);

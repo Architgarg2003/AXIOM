@@ -25,12 +25,15 @@ const Test = () => {
   const [jobTitle, setJobTitle] = useState<string>("")
   const [companyName, setCompanyName] = useState<string>("")
   const [difficulty, setDifficulty] = useState<string>("")
+  const [routeId, setRouteId] = useState<string | null>(null); // Update state type to accept string
+
   const generateMCQ = useAction(api.create_mcq.generateMCQ);
   const pushMCQ = useMutation(api.create_mcq.push_mcq);
   const generateTags = useAction(api.GetTags.getTags);
   const createCards = useMutation(api.CreateCard.Create_card);
   const createEmbedding = useAction(api.createEmbedding.createEmbeddings);
-  const [routeId, setRouteId] = useState<string | null>(null); // Update state type to accept string
+  const allCards = useQuery(api.getAllGeneratedCards.getAllGeneratedCards);
+  console.log(allCards);
 
   // const fetchTest = useQuery(api.GetTest.getTestData)
   const { showLoader, hideLoader } = useLoader();
@@ -112,18 +115,29 @@ const Test = () => {
 
         } catch (error) {
             console.error("Error creating questions:", error)
-        }finally{
-          hideLoader();
         }
+        // finally{
+        //   hideLoader();
+        // }
     }
 
     useEffect(()=>{
       if(routeId){
         router.push(`/${routeId}/start`);
-        hideLoader();
+        // hideLoader();
       }
     }, [routeId])
 
+
+    if(!allCards){
+      showLoader();
+      return(
+        <main className='h-full w-full'>
+          <Loader />
+        </main>
+      )
+    }
+    hideLoader();
   
 
   return (
@@ -151,7 +165,7 @@ const Test = () => {
         <Separator className="bg-gray-400 w-[92%] ml-10" />
       </div>
       <Featured />
-      <GeneratedTests />
+      <GeneratedTests allCards={allCards}/>
       <Loader/>
     </main>
   );

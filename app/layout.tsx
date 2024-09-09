@@ -6,7 +6,9 @@ import { cn } from '@/lib/utils'
 import { SidebarDemo } from '@/components/SidebarDemo'
 import 'regenerator-runtime/runtime';
 import { LoaderProvider } from './LoaderContext'
-
+import StarsCanvas from "@/components/main/StarBackground";
+import Navbar from "@/components/main/Navbar";
+import Footer from "@/components/main/Footer";
 const fontSans = FontSans({
     subsets: ["latin"],
     variable: "--font-sans",

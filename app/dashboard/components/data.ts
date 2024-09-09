@@ -1,4 +1,4 @@
-export const data = [
+export const data1 = [
     {
         "date": "2023-01-01",
         "count": 4,

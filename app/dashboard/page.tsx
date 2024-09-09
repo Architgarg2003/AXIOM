@@ -21,6 +21,8 @@ import Meter from "./components/Meter";
 import { TestTables } from "./components/TestTables";
 import { Leaderboard } from "./components/Leaderboard";
 import Heading from "@/components/ui/Heading";
+import { useQuery } from 'convex/react';
+import { api } from '@/convex/_generated/api';
 
 const Dashboard = () => {
 
@@ -30,7 +32,16 @@ const Dashboard = () => {
       redirect("/sign-in");
   }
 
-  const router = useRouter();
+  const TotalInteractions = useQuery(api.TotalInteractions.Get_TotalInteraction, { userId: userId});
+  console.log("TotalInteractions", TotalInteractions);
+
+  const DailyInteraction = useQuery(api.DailyInteractions.Get_AllUserInteractions,{userId:userId});
+  console.log("DailyInteraction", DailyInteraction);
+
+  
+
+
+  
 
 
   return (                                                                                                                                                                                                                                                                                                                                                                                                                              
@@ -41,7 +52,7 @@ const Dashboard = () => {
         <div>
           <div className="flex flex-row w-full items-start justify-between gap-3 overflow-hidden">
             <div className="w-[70%]">
-              <GitMap />
+              <GitMap totalInteractions={TotalInteractions} dailyInteractions={DailyInteraction || []}/>
             </div>
             <div className="w-[29%] flex flex-col gap-3">
               <Meter percentage={50} title="Accuracy" />

@@ -107,6 +107,54 @@ export default defineSchema({
         }))
     }),
 
+
+    // heatmap: defineTable({
+    //     userId:v.string(),
+    //     date: v.string(),
+    //     noOfInteractions: v.int64(),
+    // }),
+
+    TotalInteraction:defineTable({
+        userId:v.string(),
+        InteractionNumber:v.float64(),
+    }),
+
+    DailyInteraction: defineTable({
+        userId: v.string(),
+        date: v.string(),
+        count: v.float64(),
+        level: v.float64()
+    }),
+
+    leaderboard:defineTable({
+        userId:v.string(),
+        userName:v.string(),
+        board:v.array(v.object({
+            totalPoints:v.int64(),
+            totalIntractions:v.int64(),
+            totalAccuracy:v.int64()
+        }))
+    }),
+
+    messages: defineTable({
+        sender: v.string(),
+        text: v.string(),
+        timestamp: v.number(),
+    }),
+
+    // leaderboard: defineTable({
+    //     userId: v.string(),
+    //     name: v.string(),
+    //     totalPoints: v.int64(),
+    // }),
+
+    // history: defineTable({
+    //     userId: v.string(),
+    //     interactionHistory: v.array(v.string()),
+    //     testId: v.string(),
+    //     score: v.int64(),
+    // }),
+
 });
 
 

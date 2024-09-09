@@ -16,10 +16,13 @@ import { useAuth } from '@clerk/clerk-react';
 
 const TestPage = () => {
     const {userId} = useAuth();
-    const { testId } = useParams();
+    const {testId} = useParams();
     const testIdString = Array.isArray(testId) ? testId[0] : testId;
     const test = useQuery(api.GetTest.getTestById, { testId: testIdString as string });
     const pushTestAnswer = useMutation(api.pushAnswer.push_test_answer);
+    const UpdateTotalInteraction = useMutation(api.TotalInteractions.Push_totalInteractions);
+    const UpdateDailyInteraction = useMutation(api.DailyInteractions.Push_TodayInteraction);
+
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]); // Specify type as number[]
@@ -27,6 +30,7 @@ const TestPage = () => {
     const [showExitModal, setShowExitModal] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const { showLoader, hideLoader } = useLoader();
+    const [routeId, setRouteId] = useState<string | null>(null); // Update type to string | null
 
     const router = useRouter();
 
@@ -96,7 +100,7 @@ const TestPage = () => {
             return;
         }
 
-        const answerSet = test.QuestionSet.map((question, index) => ({
+        const answerSet = test.QuestionSet.map((question:any, index:any) => ({
             question: question.question,
             userAnswer: question.options[selectedAnswers[index]] || "",
             correctAnswer: question.options[parseInt(question.answer) - 1] || "",
@@ -110,21 +114,35 @@ const TestPage = () => {
                 answerSet: answerSet
             });
 
+
             console.log(answerId);
 
             // Navigate to the result page after successful submission
             if (answerId){
-                router.push(`/${testId}/start/${answerId}`);
+                const TotalInteractionId = await UpdateTotalInteraction({ userId: userId })
+                console.log("TotalInteractions : ",TotalInteractionId);
+                const DailyInteractionId = await UpdateDailyInteraction({userId:userId})
+                console.log("DailyInteractionId : ", DailyInteractionId);
+
+                setRouteId(answerId);
             }
+
+
 
         } catch (error) {
             console.error("Error submitting test:", error);
             // Handle error (e.g., show an error message to the user)
         }
-        finally{
-            hideLoader();
-        }
+        // finally{
+        //     hideLoader();
+        // }
     };
+
+    useEffect(()=>{
+        if(routeId!=null){
+            router.push(`/${testId}/start/${routeId}`);
+        }
+    },[routeId])
 
     const handleAutoSubmit = () => {
         alert("Test is being auto-submitted due to tab changes.");
@@ -161,7 +179,7 @@ const TestPage = () => {
                         <div className="bg-slate-200 h-full  w-[60%] p-20 rounded-xl">
                             <div className="question-side">
                                 <h2>{`Question ${currentQuestion + 1}: ${currentQuestionData?.question}`}</h2>
-                                {currentQuestionData?.options.map((option, index) => (
+                                {currentQuestionData?.options.map((option:any, index:any) => (
                                     <div key={index}>
                                         <input
                                             type="radio"
@@ -176,7 +194,7 @@ const TestPage = () => {
                         </div>
                         <div className='bg-slate-200 h-full w-[40%] rounded-xl'>
                             <div className=" p-20  grid gap-8 grid-cols-4">
-                                {test?.QuestionSet.map((_, index) => {
+                                {test?.QuestionSet.map((_:any, index:any) => {
                                     const isSelected = selectedAnswers[index] !== -1;
                                     const isActive = currentQuestion === index;
                                     const buttonColor = isActive
