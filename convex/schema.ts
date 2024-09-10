@@ -99,6 +99,7 @@ export default defineSchema({
         userId: v.string(),
         testId: v.string(),
         date: v.string(), // Store date as a string in ISO format (e.g., "2023-09-05T12:34:56Z")
+        jobTitle:v.string(),
         answerSet: v.array(v.object({
             question: v.string(),
             userAnswer: v.string(),

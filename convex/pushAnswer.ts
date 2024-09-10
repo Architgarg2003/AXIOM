@@ -5,6 +5,7 @@ export const push_test_answer = mutation({
     args: {
         userId: v.string(),
         testId: v.string(),
+        jobTitle:v.string(),
         answerSet: v.array(
             v.object({
                 question: v.string(),
@@ -19,6 +20,7 @@ export const push_test_answer = mutation({
             const newTestAnswerId = await ctx.db.insert("TestAnswer", {
                 userId: args.userId,
                 testId: args.testId,
+                jobTitle:args.jobTitle,
                 date: new Date().toISOString(),
                 answerSet: args.answerSet,
             });

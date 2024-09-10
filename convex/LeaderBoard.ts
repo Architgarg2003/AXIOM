@@ -99,3 +99,83 @@ export const getAllUsers = query({
         }
     }
 });
+
+
+
+
+// export const updateLeaderboard = mutation({
+//     args: {
+//         userId: v.string(),
+//         additionalPoints: v.float64(),
+//         additionalAccuracy: v.float64(),
+//     },
+//     handler: async (ctx, args) => {
+//         const { userId, additionalPoints, additionalAccuracy } = args;
+
+//         // Fetch the user's current leaderboard data
+//         const existingUser = await ctx.db
+//             .query("leaderboard")
+//             .filter((q) => q.eq(q.field("userId"), userId))
+//             .first();
+
+//         if (!existingUser) {
+//             // User doesn't exist, return an error or handle as needed
+//             return { success: false, message: "User not found in the leaderboard" };
+//         }
+
+//         // Update the user's total points and accuracy
+//         const updatedTotalPoints = existingUser.totalPoints + additionalPoints;
+//         const updatedTotalAccuracy = existingUser.totalAccuracy + additionalAccuracy;
+
+//         await ctx.db.patch(existingUser._id,{
+//                 totalPoints: updatedTotalPoints,
+//                 totalAccuracy: updatedTotalAccuracy
+//         });
+
+//         return { success: true, message: "Leaderboard updated successfully" };
+//     },
+// });
+
+
+export const updateLeaderboard = mutation({
+    args: {
+        userId: v.string(),
+        additionalPoints: v.float64(),
+        additionalAccuracy: v.float64(),
+    },
+    handler: async (ctx, args) => {
+        const { userId, additionalPoints, additionalAccuracy } = args;
+
+        try {
+            // Fetch the user's current leaderboard data
+            const existingUser = await ctx.db
+                .query("leaderboard")
+                .filter((q) => q.eq(q.field("userId"), userId))
+                .first();
+
+            if (!existingUser) {
+                // User doesn't exist, return an error or handle as needed
+                return { success: false, message: "User not found in the leaderboard" };
+            }
+
+            const averageAccuracy = (existingUser.totalAccuracy + additionalAccuracy) / 2;
+
+            // Round the average accuracy to 2 decimal places
+            const roundedAverageAccuracy = Number(Math.round(averageAccuracy + 2) * 100) / 100;
+
+            // Update the user's total points and accuracy
+            const updatedTotalPoints = existingUser.totalPoints + additionalPoints;
+            const updatedTotalAccuracy = Math.min(roundedAverageAccuracy, 100);
+
+            await ctx.db.patch(existingUser._id, {
+                totalPoints: updatedTotalPoints,
+                totalAccuracy: updatedTotalAccuracy
+            });
+
+            return { success: true, message: "Leaderboard updated successfully" };
+        } catch (error) {
+            console.error("Error updating leaderboard:", error);
+            return { success: false, message: "An error occurred while updating the leaderboard" };
+        }
+    },
+});

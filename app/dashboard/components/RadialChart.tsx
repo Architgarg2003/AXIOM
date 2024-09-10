@@ -8,7 +8,7 @@ interface RadialChartProps {
 
 const RadialChart: React.FC<RadialChartProps> = ({
     percentage,
-    size = 150,
+    size = 120,
     strokeWidth = 30
 }) => {
     const radius = (size - strokeWidth) / 2;
