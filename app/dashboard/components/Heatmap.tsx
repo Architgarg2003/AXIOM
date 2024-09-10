@@ -150,12 +150,12 @@ const GitMap = ({ totalInteractions, dailyInteractions }: GitMapI) => {
       <h1 className="font-semibold text-xl">Interactions</h1>
       <div className="text-center flex flex-row gap-[3.2rem]">
         <div className="p-2 rounded-xl">
-          <p className="font-semibold text-4xl text-black">{dailyInteractions ? dailyInteractions[0]?.count : 0}</p>
+          <p className="font-semibold text-4xl text-black">{dailyInteractions ? dailyInteractions[dailyInteractions.length-1]?.count : 0}</p>
           <Separator />
           <p className="text-sm">Today's Interactions</p>
         </div>
         <div className="p-2 rounded-xl">
-          <p className="font-semibold text-4xl text-black">{totalInteractions?.InteractionNumber}</p>
+          <p className="font-semibold text-4xl text-black">{totalInteractions?.InteractionNumber || 0}</p>
           <Separator />
           <p className="text-sm">Total Interactions</p>
         </div>

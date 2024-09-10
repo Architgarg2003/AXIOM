@@ -7,7 +7,7 @@ import { Button } from "@nextui-org/react"
 import { Plus } from "lucide-react"
 import Featured from "@/components/Featured";
 import GeneratedTests from "@/components/GeneratedTests";
-import { useAuth } from "@clerk/nextjs";
+import { useAuth, useClerk, useUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation"
 import NewModal  from "@/components/NewModal"
 import { useAction, useMutation, useQuery } from "convex/react";
@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 const Test = () => {
 
   const { userId } = useAuth();
+  const { user } = useUser();
   const [questions, setQuestions] = useState<any>(null)
   const [jobDescription, setJd] = useState<string>("")
   const [resume, setResume] = useState<string>("")
@@ -33,16 +34,38 @@ const Test = () => {
   const createCards = useMutation(api.CreateCard.Create_card);
   const createEmbedding = useAction(api.createEmbedding.createEmbeddings);
   const allCards = useQuery(api.getAllGeneratedCards.getAllGeneratedCards);
+  const heatmapfunction = useMutation(api.PushHeatMap.handleDailyInteraction);
+  const LeaderBoardEntry = useMutation(api.LeaderBoard.ensureLeaderboardEntry);
+  const InitializeTodaysEntry = useMutation(api.PushHeatMap.onLoginInteraction);
   console.log(allCards);
 
   // const fetchTest = useQuery(api.GetTest.getTestData)
   const { showLoader, hideLoader } = useLoader();
+
+ 
 
   const router = useRouter();
 
   if (!userId) {
       redirect("/sign-in");
   }
+  const name = user?.firstName;
+
+  useEffect(() => {
+    async function  heat() {
+      if (userId && name){
+        const handleHeatMap = await heatmapfunction({ userId });
+        console.log("heatmap: ",handleHeatMap);
+        
+        const handleLeaderBoard = await LeaderBoardEntry({ userId: userId, username: name  });
+        console.log("leaderboard: ", handleLeaderBoard);
+
+        const handleTodayHeat = await InitializeTodaysEntry({userId});
+        console.log("handleTodayHeat:", handleTodayHeat);
+      }
+    }
+    heat();
+  }, [])
 
 
    const handleGenerateMCQ = async () => {

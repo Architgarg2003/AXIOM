@@ -128,13 +128,10 @@ export default defineSchema({
 
     leaderboard:defineTable({
         userId:v.string(),
-        userName:v.string(),
-        board:v.array(v.object({
-            totalPoints:v.int64(),
-            totalIntractions:v.int64(),
-            totalAccuracy:v.int64()
-        }))
-    }),
+        username: v.string(),
+        totalPoints: v.float64(),
+        totalAccuracy: v.float64()
+    }).index("byTotalPoints", ["totalPoints"]),
 
     messages: defineTable({
         sender: v.string(),

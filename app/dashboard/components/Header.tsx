@@ -8,7 +8,12 @@ import { useRouter } from 'next/navigation';
 import { SquareChartGantt } from 'lucide-react';
 import { Flame } from 'lucide-react';
 
-const Header = () => {
+interface HeaderI{
+    rank:any;
+    maxStreak:any;
+} 
+
+const Header = ({ rank, maxStreak }: HeaderI) => {
 
     const { user } = useUser();
     const router = useRouter();
@@ -28,7 +33,7 @@ const Header = () => {
                         Resume <SquareChartGantt />
                     </Button>
                     <div className='px-3 py-2 text-white bg-[#7C3AED] rounded-full flex items-center w-max gap-3'>
-                        69  <Flame />
+                        {maxStreak}  <Flame />
                     </div>
                 </div>
             </div>
@@ -49,7 +54,7 @@ const Header = () => {
                             Global Rank
                         </span>
                         <span className=" text-2xl text-black  p-2 rounded-full font-bold flex flex-row gap-2">
-                            24333
+                            {rank}
                         </span>
                     </h1>
                 </div>

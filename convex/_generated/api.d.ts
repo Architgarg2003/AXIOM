@@ -19,6 +19,8 @@ import type * as DailyInteractions from "../DailyInteractions.js";
 import type * as GetTags from "../GetTags.js";
 import type * as GetTest from "../GetTest.js";
 import type * as GetUserAnswer from "../GetUserAnswer.js";
+import type * as LeaderBoard from "../LeaderBoard.js";
+import type * as PushHeatMap from "../PushHeatMap.js";
 import type * as TotalInteractions from "../TotalInteractions.js";
 import type * as createEmbedding from "../createEmbedding.js";
 import type * as create_mcq from "../create_mcq.js";
@@ -41,6 +43,8 @@ declare const fullApi: ApiFromModules<{
   GetTags: typeof GetTags;
   GetTest: typeof GetTest;
   GetUserAnswer: typeof GetUserAnswer;
+  LeaderBoard: typeof LeaderBoard;
+  PushHeatMap: typeof PushHeatMap;
   TotalInteractions: typeof TotalInteractions;
   createEmbedding: typeof createEmbedding;
   create_mcq: typeof create_mcq;
