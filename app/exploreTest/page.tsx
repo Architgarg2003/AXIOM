@@ -56,7 +56,7 @@ const Test = () => {
       if (userId && name){
         const handleHeatMap = await heatmapfunction({ userId });
         console.log("heatmap: ",handleHeatMap);
-        
+
         const handleLeaderBoard = await LeaderBoardEntry({ userId: userId, username: name  });
         console.log("leaderboard: ", handleLeaderBoard);
 
@@ -139,9 +139,7 @@ const Test = () => {
         } catch (error) {
             console.error("Error creating questions:", error)
         }
-        // finally{
-        //   hideLoader();
-        // }
+      
     }
 
     useEffect(()=>{
@@ -152,15 +150,15 @@ const Test = () => {
     }, [routeId])
 
 
-    if(!allCards){
-      showLoader();
-      return(
-        <main className='h-full w-full'>
+    useEffect(()=> {
+      if (!allCards) {
+        showLoader();
+        return ()=>{
           <Loader />
-        </main>
-      )
-    }
-    hideLoader();
+        } 
+      }
+      hideLoader();
+    }, [allCards]);
   
 
   return (

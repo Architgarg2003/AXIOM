@@ -20,15 +20,14 @@ const Result = () => {
     const [response, setResponse] = useState<any>();
     const { showLoader, hideLoader } = useLoader();
 
-    const {userId} = useAuth();
+    const { userId } = useAuth();
 
-    const updateLeaderboard = useMutation(api.LeaderBoard.updateLeaderboard);
 
     // This will directly get the user response from the API
     const userResponse = useQuery(api.GetUserAnswer.get_userAnswer, {
         answerId: answerId as string,
     });
-    
+
 
     // Log the response whenever it changes
     useEffect(() => {
@@ -66,22 +65,6 @@ const Result = () => {
 
     const { attempted, correct, score, percentage } = calculateMetrics();
 
-    useEffect(() => {
-        if ( userId && score && percentage) {
-            const updateLeaderboardAsync = async () => {
-                try {
-                    const x = await updateLeaderboard({ userId:userId, additionalPoints: score, additionalAccuracy: percentage });
-                    console.log("Leaderboard updated successfully :", x);
-                } catch (error) {
-                    console.error("Error updating leaderboard:", error);
-                }
-            };
-
-            updateLeaderboardAsync();
-        }
-    }, [userId, score, percentage]);
-
-
     // Function to determine the background color of the question card
     const getCardBackgroundColor = (question: any) => {
         if (!question.userAnswer) return 'bg-white'; // Not answered
@@ -94,13 +77,13 @@ const Result = () => {
         <div className="flex flex-col min-h-screen justify-center w-full gap-8 bg-gray-100 py-10">
             {/* First row with two boxes */}
             <div className='px-10 flex items-center justify-between'>
-                <Button className='flex gap-2' onClick={()=>router.push('/')}> <MoveLeft />Back </Button>
+                <Button className='flex gap-2' onClick={() => router.replace('/dashboard')}> <MoveLeft />Back </Button>
                 <Button className='flex gap-2' onClick={() => router.back()}>Retest <RotateCcw /></Button>
             </div>
             <div className="flex flex-col md:flex-row w-full justify-center space-x-0 md:space-x-5 space-y-5 md:space-y-0">
                 {/* Left card with smaller cards inside */}
-               
-               
+
+
                 <div className="flex flex-col rounded-3xl w-full md:w-[47%] h-72 bg-[#7C3AED] pt-9 p-5">
                     {/* Row with two small cards */}
                     <div className="flex flex-row justify-between mb-4">
@@ -124,10 +107,10 @@ const Result = () => {
                 </div>
 
                 {/* Right empty card */}
-                <div className="flex items-center justify-center rounded-3xl w-full md:w-[47%] h-72 bg-white mt-9">
+                <div className="flex flex-col items-center justify-center rounded-3xl w-full md:w-[47%] h-72 bg-white mt-9">
                     <Meter percentage={percentage} size={400} strokeWidth={50} />
-                    <div className='absolute pt-32'>
-                        <h1 className='font-bold text-5xl'>{percentage}%</h1>
+                    <div className='flex -mt-10'>
+                        <h1 className='relative font-bold text-5xl'>{percentage}%</h1>
                     </div>
                 </div>
             </div>

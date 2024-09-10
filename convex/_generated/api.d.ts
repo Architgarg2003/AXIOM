@@ -16,6 +16,8 @@ import type {
 } from "convex/server";
 import type * as CreateCard from "../CreateCard.js";
 import type * as DailyInteractions from "../DailyInteractions.js";
+import type * as FindTest from "../FindTest.js";
+import type * as GetHistory from "../GetHistory.js";
 import type * as GetTags from "../GetTags.js";
 import type * as GetTest from "../GetTest.js";
 import type * as GetUserAnswer from "../GetUserAnswer.js";
@@ -40,6 +42,8 @@ import type * as pushAnswer from "../pushAnswer.js";
 declare const fullApi: ApiFromModules<{
   CreateCard: typeof CreateCard;
   DailyInteractions: typeof DailyInteractions;
+  FindTest: typeof FindTest;
+  GetHistory: typeof GetHistory;
   GetTags: typeof GetTags;
   GetTest: typeof GetTest;
   GetUserAnswer: typeof GetUserAnswer;

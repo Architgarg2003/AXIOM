@@ -281,12 +281,15 @@ import { useAuth } from '@clerk/clerk-react';
 
 const TestPage = () => {
     const { userId } = useAuth();
-    const { testId } = useParams();
+    const { testId } = useParams() as { testId: string };;
     const testIdString = Array.isArray(testId) ? testId[0] : testId;
     const test = useQuery(api.GetTest.getTestById, { testId: testIdString as string });
     const pushTestAnswer = useMutation(api.pushAnswer.push_test_answer);
     const UpdateTotalInteraction = useMutation(api.TotalInteractions.Push_totalInteractions);
     const UpdateDailyInteraction = useMutation(api.DailyInteractions.Push_TodayInteraction);
+
+    const jobTitle = useQuery(api.FindTest.getJTbyTestId, { testId: testIdString as string }) || '';
+    console.log(jobTitle);
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
@@ -363,6 +366,10 @@ const TestPage = () => {
             console.error("UserId is not available");
             return;
         }
+        if(!jobTitle){
+            console.error("JobTitle is not available");
+            return;
+        }
 
         const answerSet = test.QuestionSet.map((question: any, index: any) => ({
             question: question.question,
@@ -375,6 +382,7 @@ const TestPage = () => {
             const answerId = await pushTestAnswer({
                 userId: userId,
                 testId: testIdString,
+                jobTitle:jobTitle,
                 answerSet: answerSet
             });
 

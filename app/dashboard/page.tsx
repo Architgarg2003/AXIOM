@@ -31,17 +31,18 @@ const Dashboard = () => {
 
   const { userId } = useAuth();
 
-  if (!userId) {
-      redirect("/sign-in");
-  }
 
-  const TotalInteractions = useQuery(api.TotalInteractions.Get_TotalInteraction, { userId: userId});
+  // if (!userId) {
+  //   redirect("/sign-in");
+  // }
+
+  const TotalInteractions = useQuery(api.TotalInteractions.Get_TotalInteraction, { userId: userId || "" });
   console.log("TotalInteractions", TotalInteractions);
 
-  const DailyInteraction = useQuery(api.DailyInteractions.Get_AllUserInteractions,{userId:userId});
+  const DailyInteraction = useQuery(api.DailyInteractions.Get_AllUserInteractions, { userId: userId || "" });
   console.log("DailyInteraction", DailyInteraction);
 
-  const getUserLeaderboardData = useQuery(api.LeaderBoard.getUserLeaderboardData, { userId: userId })
+  const getUserLeaderboardData = useQuery(api.LeaderBoard.getUserLeaderboardData, { userId: userId || "" })
   console.log("getUserLeaderboardData", getUserLeaderboardData);
 
   const TopUsers = useQuery(api.LeaderBoard.getTopUsers);
@@ -50,6 +51,9 @@ const Dashboard = () => {
 
   const AllUsers = useQuery(api.LeaderBoard.getAllUsers);
   console.log("AllUsers", AllUsers);
+
+  const UserTestHistory = useQuery(api.GetHistory.getTestHistoryById,{userId:userId || ''})
+  console.log("UserTestHistory", UserTestHistory);
   
 
   const percentage = getUserLeaderboardData?.totalAccuracy
@@ -211,24 +215,24 @@ const Dashboard = () => {
       <div className="flex mt-5 flex-col h-full w-full gap-5  p-5 bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-3xl bg-opacity-10 border border-slate-100 overflow-hidden overflow-x-scroll rounded-xl">
         <div>
           <div className="flex flex-row w-full items-start justify-between gap-3 overflow-hidden">
-            <div className="w-[70%]">
+            <div className="w-[66%]">
               <GitMap totalInteractions={TotalInteractions} dailyInteractions={DailyInteraction || []}/>
             </div>
-            <div className="w-[29%] flex flex-col gap-3">
+            <div className="w-[33%] flex flex-col gap-3">
               <Meter percentage={percentage ?? 0} title="Accuracy" />
               {/* <Meter percentage={50} title="Accuracy"/> */}
             </div>
           </div> 
         </div>
         <div className="w-full flex flex-row gap-3 h-[60rem] ">
-          <div className="bg-white w-[70%] p-7 rounded-xl pt-10 ">
+          <div className="bg-white w-[66%] p-7 rounded-xl pt-10 ">
             <Heading>
               History
             </Heading>
             <Separator />
-            <TestTables />
+            <TestTables UserTestHistory={UserTestHistory} />
           </div>
-          <div className="bg-white w-[29%] p-7 pt-10 rounded-xl -mt-[13.5rem]">
+          <div className="bg-white w-[33%] p-7 pt-10 rounded-xl -mt-[15rem]">
             <Heading>
               Leaderboard
             </Heading>

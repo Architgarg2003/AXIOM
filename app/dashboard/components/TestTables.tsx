@@ -1,368 +1,65 @@
 "use client"
 
 import * as React from "react"
-import {
-    CaretSortIcon,
-    ChevronDownIcon,
-    DotsHorizontalIcon,
-} from "@radix-ui/react-icons"
-import {
-    ColumnDef,
-    ColumnFiltersState,
-    SortingState,
-    VisibilityState,
-    flexRender,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    useReactTable,
-} from "@tanstack/react-table"
+import { format } from 'date-fns';
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
-
-const data: Payment[] = [
-    {
-        id: "m5gr84i9",
-        marks: 316,
-        test: "success",
-        date: "ken99@yahoo.com",
-    },
-    {
-        id: "3u1reuv4",
-        marks: 242,
-        test: "success",
-        date: "Abe45@gmail.com",
-    },
-    {
-        id: "derv1ws0",
-        marks: 837,
-        test: "processing",
-        date: "Monserrat44@gmail.com",
-    },
-    {
-        id: "5kma53ae",
-        marks: 874,
-        test: "success",
-        date: "Silas22@gmail.com",
-    },
-    {
-        id: "bhqecj4p",
-        marks: 721,
-        test: "failed",
-        date: "carmella@hotmail.com",
-    },
-    {
-        id: "bhqecj4p",
-        marks: 721,
-        test: "failed",
-        date: "carmella@hotmail.com",
-    },
-    {
-        id: "bhqecj4p",
-        marks: 721,
-        test: "failed",
-        date: "carmella@hotmail.com",
-    },
-    {
-        id: "bhqecj4p",
-        marks: 721,
-        test: "failed",
-        date: "carmella@hotmail.com",
-    },
-    {
-        id: "bhqecj4p",
-        marks: 721,
-        test: "failed",
-        date: "carmella@hotmail.com",
-    },
-    {
-        id: "bhqecj4p",
-        marks: 721,
-        test: "failed",
-        date: "carmella@hotmail.com",
-    },
-    {
-        id: "bhqecj4p",
-        marks: 721,
-        test: "failed",
-        date: "carmella@hotmail.com",
-    },
-    {
-        id: "bhqecj4p",
-        marks: 721,
-        test: "failed",
-        date: "carmella@hotmail.com",
-    },
-    {
-        id: "bhqecj4p",
-        marks: 721,
-        test: "failed",
-        date: "carmella@hotmail.com",
-    },
-    {
-        id: "bhqecj4p",
-        marks: 721,
-        test: "failed",
-        date: "carmella@hotmail.com",
-    },
-]
-
-export type Payment = {
-    id: string
-    marks: number
-    test: "pending" | "processing" | "success" | "failed"
-    date: string
+interface TestTablesI{
+    UserTestHistory:any
 }
 
-export const columns: ColumnDef<Payment>[] = [
-    {
-        id: "select",
-        // header: ({ table }) => (
-        //     <Checkbox
-        //         checked={
-        //             table.getIsAllPageRowsSelected() ||
-        //             (table.getIsSomePageRowsSelected() && "indeterminate")
-        //         }
-        //         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        //         aria-label="Select all"
-        //     />
-        // ),
-        // cell: ({ row }) => (
-        //     <Checkbox
-        //         checked={row.getIsSelected()}
-        //         onCheckedChange={(value) => row.toggleSelected(!!value)}
-        //         aria-label="Select row"
-        //     />
-        // ),
-        enableSorting: false,
-        enableHiding: false,
-    },
-    {
-        accessorKey: "test",
-        header: "Test",
-        cell: ({ row }) => (
-            <div className="capitalize">{row.getValue("test")}</div>
-        ),
-    },
-    {
-        accessorKey: "date",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Date
-                    <CaretSortIcon className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => <div className="lowercase">{row.getValue("date")}</div>,
-    },
-    {
-        accessorKey: "marks",
-        header: () => <div className="text-right">Marks</div>,
-        cell: ({ row }) => {
-            const amount = parseFloat(row.getValue("marks"))
+export function TestTables({ UserTestHistory }: TestTablesI) {
 
-            // Format the amount as a dollar amount
-            const formatted = new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-            }).format(amount)
+    const router = useRouter();
 
-            return <div className="text-right font-medium">{formatted}</div>
-        },
-    },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const payment = row.original
+    const formatDate = (isoDate: string): string => {
+        try {
+            // Parse the ISO 8601 formatted date string
+            const dateObj = new Date(isoDate);
 
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <DotsHorizontalIcon className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        {/* <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(payment.id)}
-                        >
-                            Copy payment ID
-                        </DropdownMenuItem> */}
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>Retest</DropdownMenuItem>
-                        <DropdownMenuItem>View Results</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        },
-    },
-]
-
-export function TestTables() {
-    const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-        []
-    )
-    const [columnVisibility, setColumnVisibility] =
-        React.useState<VisibilityState>({})
-    const [rowSelection, setRowSelection] = React.useState({})
-
-    const table = useReactTable({
-        data,
-        columns,
-        onSortingChange: setSorting,
-        onColumnFiltersChange: setColumnFilters,
-        getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getSortedRowModel: getSortedRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
-        onColumnVisibilityChange: setColumnVisibility,
-        onRowSelectionChange: setRowSelection,
-        state: {
-            sorting,
-            columnFilters,
-            columnVisibility,
-            rowSelection,
-        },
-    })
-
+            // Format the date to a human-readable format
+            return format(dateObj, 'yyyy-MM-dd');
+        } catch (error) {
+            console.error('Error parsing date:', error);
+            return 'Invalid date';
+        }
+    };
+    
     return (
-        <div className="w-full">
-            <div className="flex items-center py-4">
-                <Input
-                    placeholder="Filter emails..."
-                    value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("email")?.setFilterValue(event.target.value)
-                    }
-                    className="max-w-sm"
-                />
-                {/* <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="ml-auto">
-                            Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        {table
-                            .getAllColumns()
-                            .filter((column) => column.getCanHide())
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
-                                            column.toggleVisibility(!!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
-                                )
-                            })}
-                    </DropdownMenuContent>
-                </DropdownMenu> */}
-            </div>
+        <div className="w-full pt-5">
             <div className="rounded-md border">
-                <Table>
-                    <TableHeader>
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <TableRow key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => {
-                                    return (
-                                        <TableHead key={header.id}>
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                        </TableHead>
-                                    )
-                                })}
-                            </TableRow>
-                        ))}
-                    </TableHeader>
-                    <TableBody>
-                        {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) => (
-                                <TableRow
-                                    key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
-                                >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
-                                            )}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            ))
-                        ) : (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={columns.length}
-                                    className="h-24 text-center"
-                                >
-                                    No results.
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-            </div>
-            <div className="flex items-center justify-end space-x-2 py-4">
-                {/* <div className="flex-1 text-sm text-muted-foreground">
-                    {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                    {table.getFilteredRowModel().rows.length} row(s) selected.
-                </div> */}
-                <div className="space-x-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
-                    >
-                        Previous
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
-                    >
-                        Next
-                    </Button>
+                <div className="relative overflow-x-auto ">
+                    <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" className="px-6 py-3">
+                                    Job Title
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    Date
+                                </th>
+                                <th scope="col" className="px-6 py-3">
+                                    <span className="sr-only">Analysis</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {UserTestHistory?.map((item:any, index:any) => (
+                                <tr key={index} className={`bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 ${index === UserTestHistory.length - 1 ? '' : 'border-b'}`}>
+                                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {item.jobTitle}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        {formatDate(item.date)}
+                                    </td>
+                                    <td className="px-6 py-4 text-right">
+                                        <Button onClick={() => router.push(`dashboard/Analysis/${item._id}`)} size={'sm'} className="font-normal text-white ">Analysis</Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

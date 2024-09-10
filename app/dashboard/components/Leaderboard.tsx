@@ -37,7 +37,7 @@ export function Leaderboard({ TopUsers }:LeaderBoardI) {
                                         {user.username}
                                     </td>
                                     <td className="px-6 py-4">
-                                        {user.totalPoints}
+                                        {user.totalPoints.toFixed(2)}
                                     </td>
                                 </tr>
                             ))}
