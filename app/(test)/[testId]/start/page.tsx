@@ -17,7 +17,7 @@ import { useAuth } from '@clerk/clerk-react';
 
 const TestPage = () => {
     const { userId } = useAuth();
-    const { testId } = useParams();
+    const { testId } = useParams() as {testId : string};
     const testIdString = Array.isArray(testId) ? testId[0] : testId;
     const test = useQuery(api.GetTest.getTestById, { testId: testIdString as string });
     const pushTestAnswer = useMutation(api.pushAnswer.push_test_answer);

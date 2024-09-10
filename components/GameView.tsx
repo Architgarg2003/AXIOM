@@ -32,6 +32,8 @@ import { JukeBoxModal } from "./JukeBoxModal";
 import { JukeBoxProvider } from "@/controller/JukeBoxProvider";
 import { useTrackPositions } from "@/controller/useTrackPositions";
 import ChatButton from "./ChatButton";
+import ExitButton from "./ExitButton";
+import dynamic from 'next/dynamic';
 
 export function GameView() {
   const { ref, width = 1, height = 1 } = useResizeObserver<HTMLDivElement>();
@@ -104,6 +106,7 @@ export function GameView() {
 
   return (
     <div ref={ref} className="relative h-full w-full bg-red-400">
+      <ExitButton />
       <JukeBoxProvider>
         {myPlayer && (
           <SpatialAudioController

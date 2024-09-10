@@ -17,6 +17,12 @@ import {
 } from "@/components/CharacterSelector";
 import { useMobile } from "@/util/useMobile";
 import { GameView } from "@/components/GameView";
+import { useQuery } from 'convex/react';
+import { api } from '@/convex/_generated/api';
+import { useAuth } from "@clerk/clerk-react";
+import { redirect } from "next/navigation";
+import { Button } from "@/components/ui/button";
+
 
 
 export default function Page() {
@@ -27,6 +33,15 @@ export default function Page() {
     const isMobile = useMobile();
     const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
 
+    const { userId } = useAuth();
+    if (!userId) {
+        redirect("/sign-in");
+    }
+
+    const getUserLeaderboardData = useQuery(api.LeaderBoard.getUserLeaderboardData, { userId: userId })
+    console.log("getUserLeaderboardData", getUserLeaderboardData);
+    const username = getUserLeaderboardData?.username || "";
+
     useEffect(() => {
         setAudioContext(new AudioContext());
         return () => {
@@ -36,7 +51,7 @@ export default function Page() {
             });
         };
     }, []);
-    const room_name = 'AXIOM'
+    const room_name = 'AXIOM STAGE'
 
     const humanRoomName = useMemo(() => {
         return decodeURI(room_name);
@@ -68,19 +83,29 @@ export default function Page() {
         return null;
     }
 
+    const HandleJoin = async () => {
+        try {
+            const connectionDetails = await requestConnectionDetails(username);
+            setConnectionDetails(connectionDetails);
+        } catch (e: any) {
+            toast.error(e.message || "Failed to join the room");
+        }
+    };
+
+
     // If we don't have any connection details yet, show the username form
     if (connectionDetails === null) {
         return (
             <div className="w-screen h-screen flex flex-col items-center justify-center">
                 <Toaster />
-                <h2 className="text-4xl mb-4">{humanRoomName}</h2>
+                <h2 className="text-7xl text-[#7c3aed] font-bold mb-3">{humanRoomName}</h2>
                 <RoomInfo roomName={room_name} />
                 <div className="divider"></div>
                 <CharacterSelector
                     selectedCharacter={selectedCharacter}
                     onSelectedCharacterChange={setSelectedCharacter}
                 />
-                <UsernameInput
+                {/* <UsernameInput
                     submitText="Join Room"
                     onSubmit={async (username) => {
                         try {
@@ -93,7 +118,10 @@ export default function Page() {
                             toast.error(e);
                         }
                     }}
-                />
+                /> */}
+                <Button className="h-10 w-80 bg-black text-white mt-3" onClick={HandleJoin}>
+                    Join Now
+                </Button>
             </div>
         );
     }

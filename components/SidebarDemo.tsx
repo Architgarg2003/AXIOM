@@ -8,7 +8,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { UserButton, useUser } from "@clerk/nextjs";
 import logo from "@/public/logo.png";
-import { LayoutDashboard } from 'lucide-react';
+import { Joystick, LayoutDashboard } from 'lucide-react';
 import { BookOpenCheck } from 'lucide-react';
 import { Speech } from 'lucide-react';
 import { ListStart } from 'lucide-react';
@@ -42,9 +42,9 @@ export function SidebarDemo({ children }: SidebarProps) {
             icon: <ListStart className="text-white dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
         },
         {
-            label: "Forum",
+            label: "Stage",
             href: "/Forum",
-            icon: <IconArrowLeft className="text-white dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
+            icon: <Joystick className="text-white dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
         },
     ], []);
 
