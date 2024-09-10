@@ -84,13 +84,54 @@ const Dashboard = () => {
       setDailyStreak(userStreak);
 
       // Maximum Streak
-      const maxStreak = getMaxStreak();
-      console.log("maxStreak",maxStreak);
-      setMaxStreak(maxStreak);
+      // const maxStreak = getMaxStreak();
+      // console.log("maxStreak",maxStreak);
+      // setMaxStreak(maxStreak);
     }
   }, [AllUsers]);
 
-
+  useEffect(() => {
+    if (Array.isArray(DailyInteraction)) {
+      const calculateUserStreak = () => {
+        // Filter the DailyInteraction data for the current user
+        const userInteractions = DailyInteraction.filter(entry => entry.userId === userId && entry.count > 0);
+  
+        if (userInteractions.length === 0) {
+          console.log("User Streak: 0");
+          setMaxStreak(0);
+          return;
+        }
+  
+        // Sort the user's interactions by date (assuming date is in a parseable format)
+        const sortedInteractions = userInteractions.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  
+        let streak = 1; // Start the streak count at 1 for the first valid interaction
+        const oneDayMs = 24 * 60 * 60 * 1000; // Milliseconds in a day
+  
+        for (let i = 1; i < sortedInteractions.length; i++) {
+          const currentDate = new Date(sortedInteractions[i].date);
+          const previousDate = new Date(sortedInteractions[i - 1].date);
+  
+          // Check if the current date is exactly one day after the previous date
+          const dayDifference = (currentDate.getTime() - previousDate.getTime()) / oneDayMs;
+  
+          if (dayDifference === 1) {
+            streak++; // Increment streak if the days are consecutive
+          } else if (dayDifference > 1) {
+            // If more than 1 day has passed, reset the streak
+            streak = 1;
+          }
+        }
+  
+        console.log("User Streak:", streak);
+        setMaxStreak(streak); // Store the streak in your state
+      };
+  
+      calculateUserStreak(); // Call the function to calculate the user's streak
+    }
+  }, [DailyInteraction]);
+  
+  
   const getUserDailyStreak = (date: any): number => { // Added return type
     const dailyInteractions = DailyInteraction?.filter(interaction =>
       interaction.date === date.toISOString().split('T')[0] &&
