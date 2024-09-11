@@ -20,8 +20,9 @@ import { GameView } from "@/components/GameView";
 import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useAuth } from "@clerk/clerk-react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+
 
 
 
@@ -33,9 +34,10 @@ export default function Page() {
     const isMobile = useMobile();
     const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
 
-    const { userId } = useAuth();
+    const { userId } = useAuth() as {userId:string};
+    const router = useRouter();
     if (!userId) {
-        redirect("/sign-in");
+        router.push("/");
     }
 
     const getUserLeaderboardData = useQuery(api.LeaderBoard.getUserLeaderboardData, { userId: userId })

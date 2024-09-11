@@ -126,6 +126,11 @@ export default defineSchema({
         cardId:v.string()
     }),
 
+    upVoteCount:defineTable({
+        cardId:v.string(),
+        count:v.float64()
+    }),
+
     wishList:defineTable({
         userId:v.string(),
         cardId:v.string()

@@ -44,6 +44,7 @@ const GeneratedTests = ({ allCards }: GeneratedTestsI) => {
         upvoteCount={Number(card.upvoteCount)}
         tags={card.tags}
         testId={card.testId}
+        cardId ={card._id}
       />
     )
   })) || [];

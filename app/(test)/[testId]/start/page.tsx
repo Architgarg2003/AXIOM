@@ -37,6 +37,10 @@ const TestPage = () => {
 
     const router = useRouter();
 
+    if (!userId) {
+        router.push("/");
+    }
+
     useEffect(() => {
         showLoader();
         if (test && test.QuestionSet) {
