@@ -56,12 +56,16 @@
 // }
 
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardBody, CardFooter } from "@nextui-org/react";
 import { FaStar } from "react-icons/fa";
 import { Badge } from "./Badge";
 import dynamic from 'next/dynamic';
 import PreModal from "../PreModal";
+import { TiStarOutline } from "react-icons/ti";
+import { TiStarFullOutline } from "react-icons/ti";
+import { motion, AnimatePresence } from 'framer-motion';
+
 
 const Toggle = dynamic(() => import('./Toggle').then((mod) => mod.Toggle), { ssr: false });
 const Button = dynamic(() => import('./button').then((mod) => mod.Button), { ssr: false });
@@ -71,6 +75,34 @@ export default function Cards() {
     const list = [{ title: "Orange" }];
 
     const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
+
+    const [isStarred, setIsStarred] = useState(false);
+    const [starCount, setStarCount] = useState();
+
+
+    const handleStarToggle = () => {
+        setIsStarred(!isStarred);
+    };
+
+    const starVariants = {
+        active: {
+            scale: [1, 1.2, 0.9, 1.1, 1],
+            rotate: [0, -15, 15, -15, 0],
+            transition: {
+                duration: 0.5,
+                ease: "easeInOut",
+            },
+        },
+        inactive: {
+            scale: 1,
+            rotate: 0,
+            transition: {
+                duration: 0.2,
+            },
+        },
+    };
+
+
 
     return (
         <div className="overflow-x-auto whitespace-nowrap">
@@ -89,8 +121,34 @@ export default function Cards() {
                                         <Badge className="bg-white rounded-full" variant="outline">20 May, 2023</Badge>
                                     </div>
                                     <div>
-                                        <Toggle variant="outline" className="bg-white">
+                                        {/* <Toggle variant="outline" className="bg-white">
                                            69 <FaStar className="text-gray-500 data-[state=on]:text-[hsl(271.5,81.3%,55.9%)]" />
+                                        </Toggle> */}
+
+                                        <Toggle 
+                                            variant="outline" 
+                                            aria-label="Toggle star" 
+                                            className="bg-white"
+                                            pressed={isStarred}
+
+                                            onPressedChange={handleStarToggle}
+                                        >
+                                            <AnimatePresence mode="wait">
+                                                <motion.div
+                                                    key={isStarred ? 'starred' : 'unstarred'}
+                                                    initial={{ scale: 1 }}
+                                                    animate={isStarred ? 'active' : 'inactive'}
+                                                    variants={starVariants}
+                                                    style={{ display: 'inline-block' }}
+                                                >
+                                                    {isStarred ? (
+                                                        <TiStarFullOutline className="text-purple-500 h-5 w-5" />
+                                                    ) : (
+                                                        <TiStarOutline className="text-black h-5 w-5" />
+                                                    )}
+                                                </motion.div>
+                                            </AnimatePresence>
+                                            {/* <span>{starCount}</span> */}
                                         </Toggle>
                                     </div>
                                 </div>
