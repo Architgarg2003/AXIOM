@@ -75,7 +75,6 @@
 
 "use client";
 import React from "react";
-import { AnimatedTooltip } from "../ui/animated-tooltip"; // Adjust the import path if necessary
 
 const people = [
   {
