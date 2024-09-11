@@ -84,6 +84,7 @@ export default defineSchema({
         userId: v.string(),                    // String for user ID
         testId: v.string(),                    // String for test ID
         upvoteCount: v.int64(),                // Integer for upvote count
+        // upvoteStatus:v.boolean(),
         resume: v.string(),                    // String for resume
         difficultyLevel: v.string(),           // String for difficulty level
         createdAt: v.string(),           // String for difficulty level
@@ -108,12 +109,27 @@ export default defineSchema({
         }))
     }),
 
+    files: defineTable({
+        storageId: v.id("_storage"),
+        userId: v.string(),
+        fileName: v.string(),
+        fileType: v.string(),
+    }),
 
     // heatmap: defineTable({
     //     userId:v.string(),
     //     date: v.string(),
     //     noOfInteractions: v.int64(),
     // }),
+    upVote:defineTable({
+        userId:v.string(),
+        cardId:v.string()
+    }),
+
+    wishList:defineTable({
+        userId:v.string(),
+        cardId:v.string()
+    }),
 
     TotalInteraction:defineTable({
         userId:v.string(),

@@ -22,9 +22,19 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import { useRouter } from "next/navigation";
 
 
-const PreModal = () => {
+interface PreModalI {
+    companyName: string;
+    jobTitle: string;
+    tags: string[];
+    testId: string
+}
+
+
+const PreModal = ({ companyName, jobTitle, tags, testId }: PreModalI) => {
+    const router = useRouter();
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -56,15 +66,21 @@ const PreModal = () => {
                         <TableBody>
                             <TableRow>
                                 <TableHead className="w-[100px]">Job Title</TableHead>
-                                <TableCell className="font-medium">INV001</TableCell>
+                                <TableCell className="font-medium">{jobTitle}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableHead className="w-[100px]">Company</TableHead>
-                                <TableCell className="font-medium">djlflskdfkdsljfskdjflksdjfjlskdjfjsdkfksldjf</TableCell>
+                                <TableCell className="font-medium">{companyName}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableHead className="w-[100px]">Job Description</TableHead>
-                                <TableCell className="font-medium ">INsjlfkjsdlkfjlkdsjfldsjflsdlkfdsllfdskfdslfjdsfdkfdljkfklsdkjkfsjdklfjldskfV001</TableCell>
+                                <TableCell className="font-medium ">
+                                    {tags?.map((tag, index) => (
+                                        <span key={index} className="flex gap-3">
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -74,6 +90,7 @@ const PreModal = () => {
                     <Button
                         className="bg-[#141414] text-white p-3 rounded-full"
                         size="sm"
+                        onClick={() => router.push(`/${testId}/start`)}
                     >
                         Start
                     </Button>

@@ -52,6 +52,7 @@ export const Create_card = mutation({
                 userId: args.userId,
                 testId: args.testId,
                 upvoteCount: BigInt(0),
+                // upvoteStatus:false,
                 resume: args.resume,
                 difficultyLevel: args.difficulty,
                 createdAt: new Date().toISOString(),
