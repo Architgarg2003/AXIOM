@@ -12,13 +12,15 @@ import { redirect } from "next/navigation"
 import NewModal  from "@/components/NewModal"
 import { ExpandableCardDemo } from "./Dashboard/ExpandableCardDemo";
 import Heading from "@/components/ui/Heading";
+import { useRouter } from "next/navigation";
 
 const Test = () => {
+  const router = useRouter();
 
   const { userId } = useAuth();
 
   if (!userId) {
-      redirect("/sign-in");
+      router.push('/')
   }
 
   return (
@@ -32,7 +34,7 @@ const Test = () => {
             <span className="text-4xl font-bold text-[#7c3aed] flex flex-row gap-2">
               Axiom
               <span className="text-black">
-                Wishlist
+                Bucketlist
               </span>
 
             </span>
@@ -42,15 +44,7 @@ const Test = () => {
       <div>
         <Separator className="bg-gray-400 w-[92%] ml-10" />
       </div>
-      <div className="flex flex-row items-center w-[92%] justify-center">
-        <div className="w-full text-center">
-          <ExpandableCardDemo />
-        </div>
-        <div className="bg-gray-400 w-[.1rem] h-screen "/>
-        <div className="w-full pl-5">
-          <ExpandableCardDemo />
-        </div>
-      </div>
+
     </main>
   );
 };

@@ -32,7 +32,7 @@ const GeneratedTests = ({ allCards }: GeneratedTestsI) => {
   };
 
   // Map the fetched cards to the format expected by DynamicGrid
-  const cardsData = allCards?.map((card: { _id: string; userId: string; companyName: string; jobTitle: string; createdAt: string; starsCount: number; upvoteCount: number; tags: string[]; }) => ({
+  const cardsData = allCards?.map((card: { _id: string; userId: string; companyName: string; jobTitle: string; createdAt: string; starsCount: number; upvoteCount: number; tags: string[]; testId:string }) => ({
     content: (
       <GeneratedCard
         key={card._id}
@@ -43,6 +43,7 @@ const GeneratedTests = ({ allCards }: GeneratedTestsI) => {
         starsCount={Number(card.starsCount)}
         upvoteCount={Number(card.upvoteCount)}
         tags={card.tags}
+        testId={card.testId}
       />
     )
   })) || [];

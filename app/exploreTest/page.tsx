@@ -47,7 +47,8 @@ const Test = () => {
   const router = useRouter();
 
   if (!userId) {
-      redirect("/sign-in");
+      // redirect("/");
+    router.push('/');
   }
   const name = user?.firstName;
 

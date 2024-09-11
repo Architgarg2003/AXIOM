@@ -211,7 +211,9 @@ interface GeneratedCardProps {
     starsCount: number;
     upvoteCount: number;
     tags: string[];
-    user: string;
+    user:string;
+    testId:string
+
 }
 
 export default function GeneratedCard({
@@ -221,7 +223,8 @@ export default function GeneratedCard({
     starsCount,
     upvoteCount,
     tags,
-    user
+    user,
+    testId
 }: GeneratedCardProps) {
     const colors = ["#d8b4fe", "#e9d5ff", "#c4b5fd", "#ddd6fe", "#f5d0fe"];
     const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
@@ -370,7 +373,7 @@ export default function GeneratedCard({
                             </Toggle>
                         </div>
                         <div>
-                            <PreModal />
+                            <PreModal jobTitle={jobTitle} companyName={companyName} tags={tags} testId={testId} />
                         </div>
                     </div>
                 </div>

@@ -30,6 +30,7 @@ import type * as getAllGeneratedCards from "../getAllGeneratedCards.js";
 import type * as messages from "../messages.js";
 import type * as openai from "../openai.js";
 import type * as pushAnswer from "../pushAnswer.js";
+import type * as uploadPdF from "../uploadPdF.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -56,6 +57,7 @@ declare const fullApi: ApiFromModules<{
   messages: typeof messages;
   openai: typeof openai;
   pushAnswer: typeof pushAnswer;
+  uploadPdF: typeof uploadPdF;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
