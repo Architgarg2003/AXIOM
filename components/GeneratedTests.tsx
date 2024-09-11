@@ -8,7 +8,7 @@ import { api } from "../convex/_generated/api";
 import { useAction, useQuery } from "convex/react";
 
 interface GeneratedTestsI{
-  allCards:any
+  allCards?:any
 }
 
 const GeneratedTests = ({ allCards }: GeneratedTestsI) => {

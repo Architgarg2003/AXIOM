@@ -78,11 +78,20 @@ import Encryption from "@/components/main/Encryption";
 import Hero from "@/components/main/Hero";
 import Projects from "@/components/main/Projects";
 import Skills from "@/components/main/Skills";
-import Loader from "@/components/ui/Loader";
 import { useLoader } from "./LoaderContext";
-import StarsCanvas from "@/components/main/StarBackground";
-import Navbar from "@/components/main/Navbar";
-import Footer from "@/components/main/Footer";
+
+// import Loader from "@/components/ui/Loader";
+// import StarsCanvas from "@/components/main/StarBackground";
+// import Navbar from "@/components/main/Navbar";
+// import Footer from "@/components/main/Footer";
+
+import dynamic from 'next/dynamic';
+
+const Loader = dynamic(() => import('@/components/ui/Loader'), { ssr: false });
+const StarsCanvas = dynamic(() => import('@/components/main/StarBackground'), { ssr: false });
+const Navbar = dynamic(() => import('@/components/main/Navbar'), { ssr: false });
+const Footer = dynamic(() => import('@/components/main/Footer'), { ssr: false });
+
 
 export default function Home() {
   const { isLoading, isAuthenticated } = useConvexAuth();

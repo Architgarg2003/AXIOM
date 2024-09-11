@@ -26,10 +26,10 @@ import { useRouter } from "next/navigation";
 
 
 interface PreModalI {
-    companyName: string;
-    jobTitle: string;
-    tags: string[];
-    testId: string
+    companyName?: string;
+    jobTitle?: string;
+    tags?: string[];
+    testId?: string
 }
 
 
