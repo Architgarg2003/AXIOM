@@ -56,7 +56,7 @@
 // }
 
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardBody, CardFooter } from "@nextui-org/react";
 import { FaStar } from "react-icons/fa";
 import { Badge } from "./Badge";
@@ -65,23 +65,75 @@ import PreModal from "../PreModal";
 import { TiStarOutline } from "react-icons/ti";
 import { TiStarFullOutline } from "react-icons/ti";
 import { motion, AnimatePresence } from 'framer-motion';
-
+import FPreModal from "../FPremodal";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { api } from "@/convex/_generated/api";
+import { useMutation,useQuery } from "convex/react";
+import { useAuth } from "@clerk/clerk-react";
 
 const Toggle = dynamic(() => import('./Toggle').then((mod) => mod.Toggle), { ssr: false });
 const Button = dynamic(() => import('./button').then((mod) => mod.Button), { ssr: false });
 
-export default function Cards() {
+interface CardsI{
+    data:any
+}
+
+export default function Cards({ data }: CardsI) {
     const colors = ["#d8b4fe", "#e9d5ff", "#c4b5fd", "#ddd6fe", "#f5d0fe"];
     const list = [{ title: "Orange" }];
 
+    console.log(data);
+
     const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
 
-    const [isStarred, setIsStarred] = useState(false);
-    const [starCount, setStarCount] = useState();
+    // const [isStarred, setIsStarred] = useState(false);
+    // const [starCount, setStarCount] = useState();
+
+    const { userId } = useAuth() as { userId: string };
 
 
-    const handleStarToggle = () => {
-        setIsStarred(!isStarred);
+    const [isLiked, setIsLiked] = useState(false);
+    const [likeCount, setLikeCount] = useState(0);
+
+
+    const addLike = useMutation(api.UserLike.AddLike);
+    const removeLike = useMutation(api.UserLike.RemoveLike);
+    const increaseLike = useMutation(api.LikeCount.increaseLikeCount);
+    const decreaseLike = useMutation(api.LikeCount.decreaseLikeCount);
+
+    const cardId = data?._id;
+
+    const checkLike = useQuery(api.UserLike.AlreadyLiked, { userId, cardId });
+    const getLike = useQuery(api.LikeCount.getLikeCount, { cardId });
+
+
+    useEffect(() => {
+        if (checkLike == true) {
+            setIsLiked(checkLike);
+        }
+        else {
+            setIsLiked(false)
+        }
+    }, [checkLike]);
+
+    useEffect(() => {
+        if (getLike !== undefined) {
+            setLikeCount(getLike);
+        }
+    }, [getLike]);
+
+
+    const handleLikeToggle = async () => {
+        if (isLiked) {
+            await removeLike({ userId, cardId });
+            await decreaseLike({ cardId });
+        } else {
+            await addLike({ userId, cardId });
+            await increaseLike({ cardId });
+        }
+        setIsLiked(!isLiked);
+        // Update the like count directly after the mutation
+        setLikeCount((prevCount) => isLiked ? prevCount - 1 : prevCount + 1);
     };
 
     const starVariants = {
@@ -118,7 +170,7 @@ export default function Cards() {
                             <div style={{ backgroundColor: getRandomColor() }} className="relative w-full h-[15rem] rounded-xl">
                                 <div className="flex flex-row items-center justify-between p-3">
                                     <div>
-                                        <Badge className="bg-white rounded-full" variant="outline">20 May, 2023</Badge>
+                                        <Badge className="bg-white rounded-full" variant="outline">{data?.difficultyLevel}</Badge>
                                     </div>
                                     <div>
                                         {/* <Toggle variant="outline" className="bg-white">
@@ -129,45 +181,47 @@ export default function Cards() {
                                             variant="outline" 
                                             aria-label="Toggle star" 
                                             className="bg-white"
-                                            pressed={isStarred}
+                                            pressed={isLiked}
 
-                                            onPressedChange={handleStarToggle}
+                                            onPressedChange={handleLikeToggle}
                                         >
                                             <AnimatePresence mode="wait">
                                                 <motion.div
-                                                    key={isStarred ? 'starred' : 'unstarred'}
+                                                    key={isLiked ? 'starred' : 'unstarred'}
                                                     initial={{ scale: 1 }}
-                                                    animate={isStarred ? 'active' : 'inactive'}
+                                                    animate={isLiked ? 'active' : 'inactive'}
                                                     variants={starVariants}
                                                     style={{ display: 'inline-block' }}
                                                 >
-                                                    {isStarred ? (
-                                                        <TiStarFullOutline className="text-purple-500 h-5 w-5" />
+                                                    {isLiked ? (
+                                                        <AiFillHeart className="text-purple-500 h-5 w-5" />
                                                     ) : (
-                                                        <TiStarOutline className="text-black h-5 w-5" />
+                                                        <AiOutlineHeart className="text-black h-5 w-5" />
                                                     )}
                                                 </motion.div>
                                             </AnimatePresence>
-                                            {/* <span>{starCount}</span> */}
+                                            <span className="p-1">{likeCount}</span>
                                         </Toggle>
                                     </div>
                                 </div>
                                 <div className="flex flex-col items-start text-left pt-3 pl-4 max-w-full">
-                                    <h2 className="text-md font-semibold">Company</h2>
-                                    <h1 className="text-2xl font-bold break-words overflow-hidden text-wrap">Senior UI/UX Designer</h1>
+                                    <h2 className="text-md font-semibold">{data?.companyName}</h2>
+                                    <h1 className="text-2xl font-bold break-words overflow-hidden text-wrap">{data?.jobTitle}</h1>
                                 </div>
                                 <div className="flex flex-row items-start gap-3 flex-wrap pt-3 pl-4">
-                                    <Badge size={'sm'} className="border-gray-400 text-sm rounded-full" variant="outline">20 May, 2023</Badge>
+                                    {data?.tags.map((tag:any,index:any)=>(
+                                        <Badge key={index} size={'sm'} className="border-gray-400 text-sm rounded-full" variant="outline">{tag}</Badge>
+                                    ))}
                                 </div>
                             </div>
                         </CardBody>
                         <CardFooter className="text-small justify-between bg-white rounded-b-2xl">
-                            <b>{item.title}</b>
+                            {/* <b>{item.title}</b> */}
 
                             {/* <Button className="bg-[#141414] rounded-full text-white w-1/4 p-3" size="sm">
                                 Details
                             </Button> */}
-                            <PreModal/>
+                            <FPreModal jobTitle={data?.jobTitle} companyName={data?.companyName} tags={data?.tags} testId={data.testId} />
                         </CardFooter>
                     </Card>
                 ))}

@@ -101,7 +101,11 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel";
 
-const Featured = () => {
+interface FeaturedI{
+    allFeaturedCards:any
+}
+
+const Featured = ({ allFeaturedCards }: FeaturedI) => {
     return (
         <div className="pt-6 pl-[4rem] pr-20">
             <Heading>Featured</Heading>
@@ -126,9 +130,9 @@ const Featured = () => {
             </Carousel> */}
 
             <div className='w-full flex flex-row overflow-x-scroll h-max overflow-hidden '>
-                {Array.from({ length: 5 }).map((_, index) => (
+                {allFeaturedCards?.map((data:any, index:any) => (
                         <div key={index} className="p-5 flex-row inline-flex p">
-                            <Cards />
+                            <Cards data={data}/>
                         </div>
                 ))}
             </div>

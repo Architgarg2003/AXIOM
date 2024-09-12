@@ -25,7 +25,7 @@ import {
 import { useRouter } from "next/navigation";
 
 
-interface PreModalI {
+interface FPreModalI {
     companyName?: string;
     jobTitle?: string;
     tags?: string[];
@@ -33,7 +33,7 @@ interface PreModalI {
 }
 
 
-const PreModal = ({ companyName, jobTitle, tags, testId }: PreModalI) => {
+const FPreModal = ({ companyName, jobTitle, tags, testId }: FPreModalI) => {
     const router = useRouter();
     return (
         <Dialog>
@@ -90,7 +90,7 @@ const PreModal = ({ companyName, jobTitle, tags, testId }: PreModalI) => {
                     <Button
                         className="bg-[#141414] text-white p-3 rounded-full"
                         size="sm"
-                        onClick={() => router.push(`/${testId}/start`)}
+                        onClick={() => router.push(`/${testId}/featuredStart`)}
                     >
                         Start
                     </Button>
@@ -100,4 +100,4 @@ const PreModal = ({ companyName, jobTitle, tags, testId }: PreModalI) => {
     )
 }
 
-export default PreModal;
+export default FPreModal;

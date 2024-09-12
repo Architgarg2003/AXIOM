@@ -17,6 +17,7 @@ import type {
 import type * as CreateCard from "../CreateCard.js";
 import type * as DailyInteractions from "../DailyInteractions.js";
 import type * as FindTest from "../FindTest.js";
+import type * as GeneratedCardSearch from "../GeneratedCardSearch.js";
 import type * as GetCard from "../GetCard.js";
 import type * as GetHistory from "../GetHistory.js";
 import type * as GetTags from "../GetTags.js";
@@ -29,6 +30,7 @@ import type * as TotalInteractions from "../TotalInteractions.js";
 import type * as UserLike from "../UserLike.js";
 import type * as createEmbedding from "../createEmbedding.js";
 import type * as create_mcq from "../create_mcq.js";
+import type * as getAllFeaturedCards from "../getAllFeaturedCards.js";
 import type * as getAllGeneratedCards from "../getAllGeneratedCards.js";
 import type * as messages from "../messages.js";
 import type * as openai from "../openai.js";
@@ -48,6 +50,7 @@ declare const fullApi: ApiFromModules<{
   CreateCard: typeof CreateCard;
   DailyInteractions: typeof DailyInteractions;
   FindTest: typeof FindTest;
+  GeneratedCardSearch: typeof GeneratedCardSearch;
   GetCard: typeof GetCard;
   GetHistory: typeof GetHistory;
   GetTags: typeof GetTags;
@@ -60,6 +63,7 @@ declare const fullApi: ApiFromModules<{
   UserLike: typeof UserLike;
   createEmbedding: typeof createEmbedding;
   create_mcq: typeof create_mcq;
+  getAllFeaturedCards: typeof getAllFeaturedCards;
   getAllGeneratedCards: typeof getAllGeneratedCards;
   messages: typeof messages;
   openai: typeof openai;

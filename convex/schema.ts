@@ -51,9 +51,6 @@ export default defineSchema({
         jobTitle: v.string(),                // String for job title
         createdAt: v.string(),               // String for creation timestamp
         updatedAt: v.string(),               // String for update timestamp
-        jobDescription: v.string(),          // String for job description
-        starsCount: v.int64(),               // Integer for stars count
-        userId: v.string(),                  // String for user ID
         testId: v.string(),                  // String for test ID
     }),
 
@@ -69,6 +66,30 @@ export default defineSchema({
                 })
             ),
         }),
+
+
+        // featured test
+    // featuredTest: defineTable({
+    //     date: v.string(), // Assuming you want to store multiple dates
+    //     QuestionSet: v.array(
+    //         v.object({
+    //             answer: v.string(),
+    //             options: v.array(v.string()),
+    //             question: v.string(),
+    //         })
+    //     ),
+    // }),
+
+    featuredTest: defineTable({
+        QuestionSet: v.array(
+            v.object({
+                answer: v.float64(),
+                options: v.array(v.string()),
+                question: v.string(),
+            })
+        ),
+        date: v.string(),
+    }),
 
 
 
@@ -91,7 +112,7 @@ export default defineSchema({
         embeddings: v.array(v.float64())    // Embeddings for companyName, jobTitle, and tags
     }).vectorIndex("by_embedding", {
         vectorField: "embeddings",
-        dimensions: 1536,                      // Adjust dimensions based on your embedding size
+        dimensions: 768,                      // Adjust dimensions based on your embedding size
         filterFields: ["jobTitle"],
     }),
 

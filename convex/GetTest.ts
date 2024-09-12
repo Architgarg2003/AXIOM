@@ -23,3 +23,16 @@ export const getTestById = query({
         return test;
     },
 });
+
+
+
+export const getFTestById = query({
+    args: { testId: v.string() },
+    handler: async (ctx, args) => {
+        const test = await ctx.db
+            .query("featuredTest")
+            .filter((q) => q.eq(q.field("_id"), args.testId))
+            .first();
+        return test;
+    },
+});

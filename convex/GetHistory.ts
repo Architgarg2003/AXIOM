@@ -7,6 +7,7 @@ export const getTestHistoryById = query({
         const TestHistory = await ctx.db
             .query("TestAnswer")
             .filter((q) => q.eq(q.field("userId"), args.userId))
+            .order("desc")
             .collect();
         return TestHistory;
     },
