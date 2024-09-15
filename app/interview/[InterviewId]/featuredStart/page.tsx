@@ -19,12 +19,12 @@ const TestPage = () => {
     const { userId } = useAuth();
     const { testId } = useParams() as {testId : string};
     const testIdString = Array.isArray(testId) ? testId[0] : testId;
-    const test = useQuery(api.GetTest.getTestById, { testId: testIdString as string });
+    const test = useQuery(api.GetTest.getFTestById, { testId: testIdString as string });
     const pushTestAnswer = useMutation(api.pushAnswer.push_test_answer);
     const UpdateTotalInteraction = useMutation(api.TotalInteractions.Push_totalInteractions);
     const UpdateDailyInteraction = useMutation(api.DailyInteractions.Push_TodayInteraction);
 
-    const jobTitle = useQuery(api.FindTest.getJTbyTestId, { testId: testIdString as string }) || '';
+    const jobTitle = useQuery(api.FindTest.getFJTbyTestId, { testId: testIdString as string }) || '';
     console.log(jobTitle);
 
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -143,7 +143,7 @@ const TestPage = () => {
 
     useEffect(() => {
         if (routeId != null) {
-            router.push(`/${testId}/start/${routeId}`);
+            router.push(`/${testId}/featuredStart/${routeId}`);
         }
     }, [routeId])
 
@@ -166,7 +166,6 @@ const TestPage = () => {
 
     return (
         <Proctor onAutoSubmit={handleAutoSubmit}>
-            
             <div className="flex flex-col h-screen w-screen overflow-hidden">
                 <div className="relative w-full bg-[#4c2195] text-white p-4 flex justify-between items-center">
                     <Heading >Test</Heading>

@@ -12,3 +12,15 @@ export const getCardById = query({
         return test;
     },
 });
+
+
+export const getInterviewCardById = query({
+    args: { cardId: v.string() },
+    handler: async (ctx, args) => {
+        const test = await ctx.db
+            .query("generatedInterviewCards")
+            .filter((q) => q.eq(q.field("_id"), args.cardId))
+            .first();
+        return test;
+    },
+});

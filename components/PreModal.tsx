@@ -30,10 +30,12 @@ interface PreModalI {
     jobTitle?: string;
     tags?: string[];
     testId?: string;
+    InterviewId?:string;
+    isInterview?:boolean
 }
 
 
-const PreModal = ({ companyName, jobTitle, tags, testId }: PreModalI) => {
+const PreModal = ({ companyName, jobTitle, tags, testId, InterviewId, isInterview }: PreModalI) => {
     const router = useRouter();
     return (
         <Dialog>
@@ -90,7 +92,7 @@ const PreModal = ({ companyName, jobTitle, tags, testId }: PreModalI) => {
                     <Button
                         className="bg-[#141414] text-white p-3 rounded-full"
                         size="sm"
-                        onClick={() => router.push(`/${testId}/start`)}
+                        onClick={() => { isInterview ? (router.push(`interview/${InterviewId}/start`)) : (router.push(`/${testId}/start`)) }}
                     >
                         Start
                     </Button>

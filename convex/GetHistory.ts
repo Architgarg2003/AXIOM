@@ -12,3 +12,17 @@ export const getTestHistoryById = query({
         return TestHistory;
     },
 });
+
+
+
+export const getInterviewHistoryById = query({
+    args: { userId: v.string() },
+    handler: async (ctx, args) => {
+        const TestHistory = await ctx.db
+            .query("InterviewAnswer")
+            .filter((q) => q.eq(q.field("userId"), args.userId))
+            .order("desc")
+            .collect();
+        return TestHistory;
+    },
+});

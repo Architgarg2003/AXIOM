@@ -1,4 +1,5 @@
 
+
 // const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 // const genAI = new GoogleGenerativeAI('AIzaSyBK1edzaiNbCD3ngi7OL2yX-z3XqBjKuG4');
@@ -142,11 +143,14 @@ export const generateMCQ = action({
 
     const prompt = `
 
-      Generate a set of 10 to 20 multiple-choice questions (MCQs) based on the given job title, job description, and the user's resume. Each MCQ should consist of the following:
+Given the following context, which includes the candidate's resume, the job description, and the job title, generate a set of 10 to 20 multiple-choice questions (MCQs). Each MCQ should consist of:
 
-      1. A question related to the skills, qualifications, or experience required for the job.
-      2. An array of four possible answer options, where one is correct.
-      3. The correct answer's index number (starting from 1).
+1. A question related to the skills, qualifications, or experience required for the job, ensuring relevance to the candidate's resume and the job description.
+2. An array of four possible answer options, where one is correct.
+3. The correct answer's index number (starting from 1).
+
+Additionally, each question should be designed to help evaluate the candidate's suitability for the role by assessing their knowledge, skills, and experiences as detailed in their resume and the job requirements.
+
 
       Job Title: ${args.jobTitle}
 

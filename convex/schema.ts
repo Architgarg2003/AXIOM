@@ -195,6 +195,64 @@ export default defineSchema({
     //     score: v.int64(),
     // }),
 
+
+
+    // Interview
+
+    generatedInterviewCards: defineTable({
+        tags: v.array(v.string()),             // Array of strings for tags
+        companyName: v.string(),               // String for company name
+        jobTitle: v.string(),                  // String for job title
+        jobDescription: v.string(),            // String for job description
+        starsCount: v.int64(),                 // Integer for stars count
+        userId: v.string(),                    // String for user ID
+        InterviewId: v.string(),                    // String for test ID
+        upvoteCount: v.int64(),                // Integer for upvote count
+        // upvoteStatus:v.boolean(),
+        resume: v.string(),                    // String for resume
+        difficultyLevel: v.string(),           // String for difficulty level
+        createdAt: v.string(),           // String for difficulty level
+        embeddings: v.array(v.float64())    // Embeddings for companyName, jobTitle, and tags
+    }).vectorIndex("by_embedding", {
+        vectorField: "embeddings",
+        dimensions: 768,                      // Adjust dimensions based on your embedding size
+        filterFields: ["jobTitle"],
+    }),
+
+
+    Interview: defineTable({
+        userId: v.string(),
+        date: v.string(), // Assuming you want to store multiple dates
+        QuestionSet: v.array(
+            v.object({
+                question: v.string(),
+            })
+        ),
+    }),
+
+    InterviewAnswer: defineTable({
+        userId: v.string(),
+        InterviewId: v.string(),
+        date: v.string(), // Store date as a string in ISO format (e.g., "2023-09-05T12:34:56Z")
+        jobTitle: v.string(),
+        analytics:v.array(v.object({
+            strength:v.optional(v.array(v.string())),
+            weakness:v.optional(v.array(v.string())),
+            summary:v.optional(v.string()),
+            score:v.optional(v.string())
+        })),
+        answerSet: v.array(v.object({
+            question: v.string(),
+            userAnswer: v.string(),
+        }))
+    }),
+
+    InterviewWishlist: defineTable({
+        userId: v.string(),
+        cardId: v.string()
+    }),
+
+
 });
 
 

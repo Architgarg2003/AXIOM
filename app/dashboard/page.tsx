@@ -297,6 +297,9 @@ const Dashboard = () => {
   const UserTestHistory = useQuery(api.GetHistory.getTestHistoryById, { userId: userId || '' });
   console.log("UserTestHistory", UserTestHistory);
 
+  const UserInterviewHistory = useQuery(api.GetHistory.getInterviewHistoryById, { userId: userId || '' });
+  console.log("UserTestHistory", UserTestHistory);
+
   const percentage = getUserLeaderboardData?.totalAccuracy;
 
   const { showLoader, hideLoader } = useLoader();
@@ -430,7 +433,7 @@ const Dashboard = () => {
           <div className="bg-white w-[66%] p-7 rounded-xl pt-10">
             <Heading>History</Heading>
             <Separator />
-            <TestTables UserTestHistory={UserTestHistory} />
+            <TestTables UserTestHistory={UserTestHistory} UserInterviewHistory={UserInterviewHistory} />
           </div>
           <div className="bg-white w-[33%] p-7 pt-10 rounded-xl -mt-[15rem]">
             <Heading>Leaderboard</Heading>

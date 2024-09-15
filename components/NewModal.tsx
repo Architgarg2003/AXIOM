@@ -196,9 +196,10 @@ interface NewModalI {
     setDifficulty: (e: any) => void,
     setCompanyName: (e: any) => void,
     handleGenerateMCQ: () => void,
+    isInterview:boolean
 }
 
-const NewModal = ({ handleGenerateMCQ, setJd, setResume, setJobTitle, setDifficulty, setCompanyName }: NewModalI) => {
+const NewModal = ({ isInterview,handleGenerateMCQ, setJd, setResume, setJobTitle, setDifficulty, setCompanyName }: NewModalI) => {
     const{userId}= useAuth() as {userId : string};
     const [open, setOpen] = useState(false);
     const [file, setFile] = useState<File | null>(null)
@@ -266,9 +267,9 @@ const NewModal = ({ handleGenerateMCQ, setJd, setResume, setJobTitle, setDifficu
             </DialogTrigger>
             <DialogContent className="h-max w-[90rem]">
                 <DialogHeader>
-                    <DialogTitle>Create New Test</DialogTitle>
+                    <DialogTitle>Create New {isInterview?" Interview":" Test"}</DialogTitle>
                     <DialogDescription>
-                        Create a custom test tailored just for you using AI.
+                        Create a custom {isInterview ? " interview " : " test "} tailored just for you using AI.
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit}>

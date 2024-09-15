@@ -272,8 +272,10 @@ interface GeneratedCardProps {
     upvoteCount: number;
     tags: string[];
     user: string;
-    testId: string;
+    testId?: string;
+    InterviewId?:string;
     cardId: string;
+    isInterview?:boolean
 }
 
 export default function GeneratedCard({
@@ -285,8 +287,11 @@ export default function GeneratedCard({
     tags,
     user,
     testId,
-    cardId
+    InterviewId,
+    cardId,
+    isInterview
 }: GeneratedCardProps) {
+    console.log(cardId);
     const colors = ["#d8b4fe", "#e9d5ff", "#c4b5fd", "#ddd6fe", "#f5d0fe"];
     const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
 
@@ -296,29 +301,43 @@ export default function GeneratedCard({
     const [starCount, setStarCount] = useState(starsCount);
 
     const addToBucket = useMutation(api.wishlist.AddToWishlist);
+    const addToInterviewBucket = useMutation(api.InterviewWishlist.AddToWishlist);
+
     const removeFromBucket = useMutation(api.wishlist.RemoveFromWishlist);
+    const removeFromInterviewBucket = useMutation(api.InterviewWishlist.RemoveFromWishlist);
+
     const addLike = useMutation(api.UserLike.AddLike);
     const removeLike = useMutation(api.UserLike.RemoveLike);
     const increaseLike = useMutation(api.LikeCount.increaseLikeCount);
     const decreaseLike = useMutation(api.LikeCount.decreaseLikeCount);
 
     const { userId } = useAuth() as { userId: string };
+
     const checkInBucket = useQuery(api.wishlist.inBucket, { userId, cardId });
+    const checkInInterviewBucket = useQuery(api.InterviewWishlist.inBucket, { userId, cardId });
+
     const checkLike = useQuery(api.UserLike.AlreadyLiked, { userId, cardId });
     const getLike = useQuery(api.LikeCount.getLikeCount, { cardId });
     console.log("getLike", checkLike);
 
+
     useEffect(() => {
-        if (checkInBucket !== undefined) {
-            setIsStarred(checkInBucket);
+        if (isInterview) {
+            if (checkInInterviewBucket !== undefined) {
+                setIsStarred(checkInInterviewBucket);
+            }
+        } else {
+            if (checkInBucket !== undefined) {
+                setIsStarred(checkInBucket);
+            }
         }
-    }, [checkInBucket]);
+    }, [checkInBucket, checkInInterviewBucket, isInterview]);
 
     useEffect(() => {
         if (checkLike == true) {
             setIsLiked(checkLike);
         }
-        else{
+        else {
             setIsLiked(false)
         }
     }, [checkLike]);
@@ -330,12 +349,22 @@ export default function GeneratedCard({
     }, [getLike]);
 
     const handleStarToggle = async () => {
-        if (isStarred) {
-            await removeFromBucket({ userId, cardId });
-            setStarCount(starCount - 1);
+        if (isInterview) {
+            if (isStarred) {
+                await removeFromInterviewBucket({ userId, cardId });
+                setStarCount(starCount - 1);
+            } else {
+                await addToInterviewBucket({ userId, cardId });
+                setStarCount(starCount + 1);
+            }
         } else {
-            await addToBucket({ userId, cardId });
-            setStarCount(starCount + 1);
+            if (isStarred) {
+                await removeFromBucket({ userId, cardId });
+                setStarCount(starCount - 1);
+            } else {
+                await addToBucket({ userId, cardId });
+                setStarCount(starCount + 1);
+            }
         }
         setIsStarred(!isStarred);
     };
@@ -405,7 +434,7 @@ export default function GeneratedCard({
                             {jobTitle}
                         </h1>
                         <div className="flex flex-row items-start gap-3 flex-wrap">
-                            {tags.slice(0, 2).map((tag, index) => (
+                            {tags?.slice(0, 2).map((tag, index) => (
                                 <Badge
                                     key={index}
                                     size={"sm"}
@@ -467,7 +496,7 @@ export default function GeneratedCard({
                             </Toggle>
                         </div>
                         <div>
-                            <PreModal jobTitle={jobTitle} companyName={companyName} tags={tags} testId={testId} />
+                            <PreModal InterviewId={InterviewId} isInterview={isInterview} jobTitle={jobTitle} companyName={companyName} tags={tags} testId={testId} />
                         </div>
                     </div>
                 </div>
