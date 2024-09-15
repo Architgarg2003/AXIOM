@@ -50,7 +50,7 @@ const Skeleton = ({ image }: { image: string }) => {
           <img
             src={image}
             alt="Loading..."
-            className="w-full h-full object-cover rounded-xl"
+            className="w-full h-full object-scale-down rounded-xl"
           />
         </Lens>
       )}
@@ -62,46 +62,46 @@ const items = [
   {
     title: "Personalized Dashboard",
     description: "Access tailored content, tests, and interviews based on your goals.",
-    header: <Skeleton image={'/NextWebsite.png'}/>, // Replace Skeleton with image
+    header: <Skeleton image={'/dashboard.png'}/>, // Replace Skeleton with image
     icon: <IconUserCircle className="h-6 w-6 text-white" />, // User icon
   },
   {
     title: "Open-World Gamified Forum",
     description: "Interact with other users in an immersive 3D world using spatial audio.",
-    header: <Skeleton image={'/NextWebsite.png'}/>, // Replace Skeleton with image
+    header: <Skeleton image={'/stagein.png'}/>, // Replace Skeleton with image
     icon: <IconWorld className="h-6 w-6 text-white" />, // Globe icon
-  },
-  {
-    title: "Spatial Audio Chat",
-    description: "Talk with others in real time as if you were in the same room.",
-    header: <Skeleton image={'/NextWebsite.png'}/>, // Replace Skeleton with image
-    icon: <IconHeadset className="h-6 w-6 text-white" />, // Headset icon
-  },
-  {
-    title: "Leaderboard & Ratings",
-    description: "Climb the leaderboard based on your performance in tests and interviews.",
-    header: <Skeleton image={'/NextWebsite.png'}/>, // Replace Skeleton with image
-    icon: <IconTrophy className="h-6 w-6 text-white" />, // Trophy icon
   },
   {
     title: "AI-Powered Assessments",
     description:
       "Tailored tests based on your resume and target companies to help you practice effectively.",
-    header: <Skeleton image={'/NextWebsite.png'}/>, // Replace Skeleton with image
+    header: <Skeleton image={'/test.png'}/>, // Replace Skeleton with image
     icon: <IconRobot className="h-6 w-6 text-white" />, // AI icon
+  },
+  {
+    title: "Spatial Audio Chat",
+    description: "Talk with others in real time as if you were in the same room.",
+    header: <Skeleton image={'/bucketlist.png'}/>, // Replace Skeleton with image
+    icon: <IconHeadset className="h-6 w-6 text-white" />, // Headset icon
+  },
+  {
+    title: "Leaderboard & Ratings",
+    description: "Climb the leaderboard based on your performance in tests and interviews.",
+    header: <Skeleton image={'/dashboard.png'}/>, // Replace Skeleton with image
+    icon: <IconTrophy className="h-6 w-6 text-white" />, // Trophy icon
   },
   {
     title: "Personalized Interview Practice",
     description:
       "Mock interviews crafted to fit your profile and aspirations, giving you real-time feedback.",
-    header: <Skeleton image={'/NextWebsite.png'}/>, // Replace Skeleton with image
+    header: <Skeleton image={'/testin.png'}/>, // Replace Skeleton with image
     icon: <IconMicrophone className="h-6 w-6 text-white" />, // Microphone icon
   },
   {
     title: "Global Collaboration & FAQ",
     description:
       "Join a global community of users, explore, interact, and learn from collective experiences.",
-    header:<Skeleton image={'/NextWebsite.png'}/>, // Replace Skeleton with image
+    header:<Skeleton image={'/stage.png'}/>, // Replace Skeleton with image
     icon: <IconWorld className="h-6 w-6 text-white" />, // Globe icon
   },
 ];
