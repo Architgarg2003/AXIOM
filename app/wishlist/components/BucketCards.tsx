@@ -467,7 +467,7 @@ export default function BucketCards({
 
         <Card
     shadow="sm"
-    className="w-[17rem] md:w-[20rem] rounded-2xl border border-gray-400"
+    className="w-[17rem] md:w-[18rem] rounded-2xl border border-gray-400"
 >
     <CardBody className="p-2 bg-white rounded-t-2xl w-full h-[16rem] md:h-[18rem] flex flex-col">
         <div

@@ -320,44 +320,23 @@ const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   // const [files, setFiles] = useState<File[]>([]);
 
-  const handleFileUpload = async (uploadedFiles: any) => {
-    // Ensure uploadedFiles is not empty
-    if (uploadedFiles.length > 0) {
-      // Get the first file from the FileList
-      const file = uploadedFiles[0];
-
-      console.log("Uploaded File:", file);
-
-      try {
-        // Generate the upload URL
-        const postUrl = await generateUploadUrl();
-
-        // Send the file to the generated URL
-        const result = await fetch(postUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': file.type },  // Set the correct file type
-          body: file,  // Pass the file as the body
-        });
-
-        // Parse the response to get the storageId
-        const { storageId } = await result.json();
-
-        // Save file details (you may pass userId from context or props)
-        await saveFile({
-          storageId,
-          userId: userId || '', // Ensure userId is available
-          fileName: file.name,  // Name of the uploaded file
-          fileType: file.type,  // Type of the file
-        });
-
+  const handleFileUpload = async (uploadedFiles:any) => {
+    console.log("uploadedFiles",uploadedFiles);
+    if (uploadedFiles) {
+        try {
+          const postUrl = await generateUploadUrl()
+          const result = await fetch(postUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': uploadedFiles.type },
+            body: uploadedFiles,
+          })
+          const { storageId } = await result.json();
+          await saveFile({ storageId, userId:userId || '', fileName: uploadedFiles.name, fileType: uploadedFiles.type })
       } catch (error) {
-        console.error("Error uploading file:", error);
+        console.error("Error parsing PDF:", error)
       }
-    } else {
-      console.warn("No files selected for upload.");
     }
-  };
-
+  }
 
   const handleModalOpen = ()=>{
      setIsModalOpen(true)
