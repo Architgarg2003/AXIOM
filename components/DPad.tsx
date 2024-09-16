@@ -1,5 +1,7 @@
 import DPadSvg from "@/components/icons/d-pad.svg";
 import { TouchEvent, useCallback, useRef } from "react";
+import dpadimg from '@/components/icons/d-pad.svg';
+
 
 type Props = {
   onInput: (x: number, y: number) => void;
@@ -69,10 +71,16 @@ export const DPad = ({ onInput }: Props) => {
       onTouchStart={onTouchDown}
       onTouchEnd={onTouchUp}
     >
-      <DPadSvg
-        className="absolute top-0 left-0 right-0 bottom-0 touch-none"
-        style={{ color: "rgba(0,0,0,0.3" }}
-      />
+      <img
+  src="/d-pad.png"
+  alt="D-Pad"
+  className="absolute top-0 left-0 right-0 bottom-0 touch-none"
+/>
+
     </div>
   );
 };
+
+
+
+
