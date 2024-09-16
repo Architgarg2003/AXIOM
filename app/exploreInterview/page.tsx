@@ -18,7 +18,10 @@ const NewModal = dynamic(() => import('@/components/NewModal'), { ssr: false });
 const GeneratedInterview = dynamic(() => import('@/components/GeneratedInterview'), { ssr: false });
 const Featured = dynamic(() => import('@/components/Featured'), { ssr: false });
 
-const Test = () => {
+
+
+
+const Test = ({  }) => {
   const { userId } = useAuth();
   const { user } = useUser();
   const [questions, setQuestions] = useState<any>(null);
@@ -27,6 +30,7 @@ const Test = () => {
   const [jobTitle, setJobTitle] = useState<string>("");
   const [companyName, setCompanyName] = useState<string>("");
   const [difficulty, setDifficulty] = useState<string>("");
+  const [loading,setLoading] = useState<boolean>(true);
 
   const generateMCQ = useAction(api.create_interview.generateInterviewQuestions);
   const pushMCQ = useMutation(api.create_interview.push_Interview);
@@ -42,6 +46,15 @@ const Test = () => {
   const InitializeTodaysEntry = useMutation(api.PushHeatMap.onLoginInteraction);
   const { showLoader, hideLoader } = useLoader();
   const router = useRouter();
+
+
+  useEffect(()=>{
+    if(loading){
+      showLoader();
+    }else{
+      hideLoader();
+    }
+  }, [loading, showLoader, hideLoader])
 
   // Redirect if user is not authenticated
   useEffect(() => {
@@ -65,7 +78,8 @@ const Test = () => {
   }, [userId, user?.firstName, heatmapfunction, LeaderBoardEntry, InitializeTodaysEntry]);
 
   const handleGenerateMCQ = async () => {
-    showLoader();
+    // showLoader();
+    setLoading(true);
     try {
       if (!userId) {
         console.error("User ID is not available");
@@ -117,16 +131,17 @@ const Test = () => {
     } catch (error) {
       console.error("Error creating questions:", error);
     } finally {
-      hideLoader();
+      // hideLoader();
+      setLoading(false);
     }
   };
 
   // Handle loading state
   useEffect(() => {
     if (!allCards && !allFeaturedCards) {
-      showLoader();
+      setLoading(true)
     } else {
-      hideLoader();
+      setLoading(false);
     }
   }, [allCards, allFeaturedCards, showLoader, hideLoader]);
 
@@ -156,7 +171,7 @@ const Test = () => {
       <div>
         <Separator className="bg-gray-400 w-[92%] ml-10" />
       </div>
-      <Featured allFeaturedCards={allFeaturedCards} />
+      <Featured isInterview={true} allFeaturedCards={allFeaturedCards} />
       <GeneratedInterview allCards={allCards} />
       <Loader />
     </main>

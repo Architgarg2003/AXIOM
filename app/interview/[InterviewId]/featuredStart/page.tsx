@@ -390,8 +390,8 @@ const InterviewPage: React.FC = () => {
     const updateLeaderboard = useMutation(api.LeaderBoard.updateLeaderboard);
 
 
-    const jobTitle = useQuery(api.FindInterview.getJTbyInterviewId,{InterviewId:InterviewId});
-
+    const jobTitle = useQuery(api.FindInterview.getInterviewFJTbyTestId,{InterviewId:InterviewId});
+    console.log("jobTitle", jobTitle);
     const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
 
     const startVideoStream = async () => {
@@ -642,7 +642,7 @@ const InterviewPage: React.FC = () => {
                         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
                             <h2 className="text-2xl font-semibold mb-4">Interview Complete</h2>
                             <p>Thank you for your responses. Your answers have been recorded.</p>
-                            <Button onClick={()=>{showLoader(); router.push(`/interview/${InterviewId}/start/${routeId}`)}} className='mt-10' size={'default'} variant={'default'}>View Result</Button>
+                            <Button onClick={()=>{showLoader(); router.push(`/interview/${InterviewId}/featuredStart/${routeId}`)}} className='mt-10' size={'default'} variant={'default'}>View Result</Button>
                         </div>
                     )}
                 </main>

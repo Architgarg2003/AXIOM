@@ -1,6 +1,7 @@
 // "use client"
 import { SidebarDemo } from "@/components/SidebarDemo";
 import { LoaderProvider } from "../LoaderContext";
+import { Loader } from "lucide-react";
 
 
 export default async function DashboardLayout({
@@ -22,8 +23,10 @@ export default async function DashboardLayout({
                 <SidebarDemo>
                     <div className="flex-1 h-screen overflow-y-scroll overflow-hidden rounded-l-xl bg-gray-200">
                         {children}
+                       
                     </div>
                 </SidebarDemo>
+                <Loader />
             </LoaderProvider>
         </div>
 
