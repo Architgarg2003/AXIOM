@@ -352,10 +352,6 @@
 // export default NewModal
 
 
-
-
-
-
 "use client"
 
 import { useState, useRef, FormEvent } from 'react'

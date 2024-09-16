@@ -429,7 +429,7 @@ export default function GeneratedCard({
                     className="w-full h-full rounded-xl flex flex-col justify-between"
                 >
                     <div className="flex flex-col items-start text-left pt-8 pl-4 pr-4 max-w-full">
-                        <h2 className="text-md font-semibold">{companyName}</h2>
+                        <p className="text-md font-semibold">{companyName}</p>
                         <h1 className="text-2xl font-bold w-full break-words whitespace-normal mb-2">
                             {jobTitle}
                         </h1>

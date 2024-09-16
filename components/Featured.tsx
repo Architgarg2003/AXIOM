@@ -102,7 +102,7 @@ import {
 } from "@/components/ui/carousel";
 
 interface FeaturedI{
-    allFeaturedCards:any
+    allFeaturedCards?:any
 }
 
 const Featured = ({ allFeaturedCards }: FeaturedI) => {

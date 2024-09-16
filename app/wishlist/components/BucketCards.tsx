@@ -391,7 +391,7 @@ export default function BucketCards({
                     className="w-full h-full rounded-xl flex flex-col justify-between"
                 >
                     <div className="flex flex-col items-start text-left pt-8 pl-4 pr-4 max-w-full">
-                        <h2 className="text-md font-semibold">{currentCardData?.companyName}</h2>
+                        <p className="text-md font-semibold">{currentCardData?.companyName}</p>
                         <h1 className="text-2xl font-bold w-full break-words whitespace-normal mb-2">
                             {currentCardData?.jobTitle}
                         </h1>

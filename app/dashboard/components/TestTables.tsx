@@ -30,7 +30,7 @@ export function TestTables({ UserTestHistory,UserInterviewHistory }: TestTablesI
     return (
         <div>
             <div className="w-full pt-5">
-                <h2 className="p-1 font-bold text-xl">Test</h2>
+                <p className="p-1 font-bold text-xl">Test</p>
 
                 <div className="rounded-md border overflow-hidden overflow-y-scroll h-[23rem]">
                     <div className="relative overflow-x-auto ">
@@ -70,7 +70,7 @@ export function TestTables({ UserTestHistory,UserInterviewHistory }: TestTablesI
             </div>
             {/*  */}
             <div className="w-full pt-5">
-                <h2 className="p-1 font-bold text-xl">Interview</h2>
+                <p className="p-1 font-bold text-xl">Interview</p>
 
                 <div className="rounded-md border overflow-hidden overflow-y-scroll h-[23rem]">
                     <div className="relative overflow-x-auto ">

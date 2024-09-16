@@ -51,9 +51,9 @@ const Header = ({ rank, maxStreak, handleModalOpen }: HeaderI) => {
                 </div>
                 <div>
                     <h1 className="flex flex-row items-center gap-1 bg-white p-3 rounded-3xl  ">
-                        <span className="text-lg font-semibold text-gray-600">
+                        <p className="text-lg font-semibold text-gray-600">
                             Global Rank
-                        </span>
+                        </p>
                         <span className=" text-2xl text-black  p-2 rounded-full font-bold flex flex-row gap-2">
                             {rank}
                         </span>

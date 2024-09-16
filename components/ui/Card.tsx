@@ -205,7 +205,7 @@ export default function Cards({ data }: CardsI) {
                                     </div>
                                 </div>
                                 <div className="flex flex-col items-start text-left pt-3 pl-4 max-w-full">
-                                    <h2 className="text-md font-semibold">{data?.companyName}</h2>
+                                    <p className="text-md font-semibold">{data?.companyName}</p>
                                     <h1 className="text-2xl font-bold break-words overflow-hidden text-wrap">{data?.jobTitle}</h1>
                                 </div>
                                 <div className="flex flex-row items-start gap-3 flex-wrap pt-3 pl-4">

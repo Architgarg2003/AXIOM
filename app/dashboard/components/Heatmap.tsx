@@ -116,6 +116,7 @@ import { Separator } from '@/components/ui/separator';
 import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useAuth } from '@clerk/clerk-react';
+import Heading from '@/components/ui/Heading';
 
 interface GitMapI {
   totalInteractions: any,
@@ -147,7 +148,7 @@ const GitMap = ({ totalInteractions, dailyInteractions }: GitMapI) => {
 
   return (
     <div className="bg-white h-max w-full px-10 p-7 gap-2 rounded-xl flex flex-col">
-      <h1 className="font-semibold text-xl">Interactions</h1>
+      <Heading >Interactions</Heading>
       <div className="text-center flex flex-row gap-[3.2rem]">
         <div className="p-2 rounded-xl">
           <p className="font-semibold text-4xl text-black">{dailyInteractions ? dailyInteractions[dailyInteractions.length-1]?.count : 0}</p>
