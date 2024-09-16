@@ -421,7 +421,7 @@ export default function GeneratedCard({
     return (
         <Card
             shadow="sm"
-            className="w-[95%] rounded-2xl border border-gray-400"
+            className=" w-full sm:w-[90%] md:w-[18rem] rounded-2xl border border-gray-400"
         >
             <CardBody className="p-2 bg-white rounded-t-2xl w-full h-[18rem] flex flex-col">
                 <div

@@ -100,7 +100,7 @@ export default function Page() {
         return (
             <div className="w-screen h-screen flex flex-col items-center justify-center">
                 <Toaster />
-                <h2 className="text-7xl text-[#7c3aed] font-bold mb-3">{humanRoomName}</h2>
+                <h2 className="md:text-7xl text-4xl text-[#7c3aed] font-bold mb-3">{humanRoomName}</h2>
                 <RoomInfo roomName={room_name} />
                 <div className="divider"></div>
                 <CharacterSelector

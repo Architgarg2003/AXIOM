@@ -30,10 +30,12 @@ interface FPreModalI {
     jobTitle?: string;
     tags?: string[];
     testId?: string;
+    isInterview?:boolean
+    interviewId?:any
 }
 
 
-const FPreModal = ({ companyName, jobTitle, tags, testId }: FPreModalI) => {
+const FPreModal = ({ isInterview, companyName, jobTitle, tags, testId, interviewId }: FPreModalI) => {
     const router = useRouter();
     return (
         <Dialog>
@@ -90,7 +92,7 @@ const FPreModal = ({ companyName, jobTitle, tags, testId }: FPreModalI) => {
                     <Button
                         className="bg-[#141414] text-white p-3 rounded-full"
                         size="sm"
-                        onClick={() => router.push(`/${testId}/featuredStart`)}
+                        onClick={() => isInterview ? router.push(`interview/${interviewId}/featuredStart`) : router.push(`/${testId}/featuredStart`)}
                     >
                         Start
                     </Button>

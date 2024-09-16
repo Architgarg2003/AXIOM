@@ -143,7 +143,7 @@ const GeneratedInterview = ({ allCards }: GeneratedTestsI) => {
   })) || [];
 
   return (
-    <div className="pt-6 pl-[4rem]">
+    <div className="md:pt-6 md:pl-[4rem] p-2">
       <Heading>Generated Interview</Heading>
       <div className='flex flex-col gap-10 pt-6'>
         <div className='flex items-center justify-center px-5'>

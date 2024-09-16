@@ -26,12 +26,12 @@ export const getInterviewById = query({
 
 
 
-export const getFTestById = query({
-    args: { testId: v.string() },
+export const getFInterviewById = query({
+    args: { InterviewId: v.string() },
     handler: async (ctx, args) => {
         const test = await ctx.db
-            .query("featuredTest")
-            .filter((q) => q.eq(q.field("_id"), args.testId))
+            .query("featuredInterview")
+            .filter((q) => q.eq(q.field("_id"), args.InterviewId))
             .first();
         return test;
     },

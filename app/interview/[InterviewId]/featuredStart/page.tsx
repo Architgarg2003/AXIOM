@@ -1,256 +1,659 @@
-// my name is Archit
 
-'use client';
 
-import { Button } from '@/components/ui/button';
-import Heading from '@/components/ui/Heading';
+// "use client"
+
+// import React, { useState, useEffect, useRef, useCallback } from 'react';
+// import { useAction, useQuery } from "convex/react";
+// import { useParams } from 'next/navigation';
+// import TextToSpeech from "../../components/textToSpeech";
+// import Dictaphone from "../../components/speechRecognition";
+// import { api } from "@/convex/_generated/api";
+// import { Separator } from '@/components/ui/separator';
+// import Proctor from '../../Proctor';
+// import { Button } from '@/components/ui/button';
+
+// interface Answer {
+//     question: string;
+//     userAnswer: string;
+// }
+
+// // New component for the floating video
+// const FloatingVideo: React.FC<{ videoStream: MediaStream | null }> = ({ videoStream }) => {
+//     const videoRef = useRef<HTMLVideoElement | null>(null);
+
+//     useEffect(() => {
+//         if (videoRef.current && videoStream) {
+//             videoRef.current.srcObject = videoStream;
+//         }
+//     }, [videoStream]);
+
+//     return (
+//         <div className="fixed top-4 right-4 z-50">
+//             <div className="w-48 h-36 bg-gray-200 rounded-lg overflow-hidden shadow-lg">
+//                 <video
+//                     ref={videoRef}
+//                     autoPlay
+//                     playsInline
+//                     muted
+//                     className="w-full h-full object-cover"
+//                 />
+//             </div>
+//         </div>
+//     );
+// };
+
+// const InterviewPage: React.FC = () => {
+//     const { InterviewId } = useParams() as { InterviewId: string };
+//     const testIdString = Array.isArray(InterviewId) ? InterviewId[0] : InterviewId;
+//     const test = useQuery(api.GetInterview.getInterviewById, { InterviewId: testIdString });
+//     const Analysis = useAction(api.InterviewAnalytics.createAnalytics);
+
+//     const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
+
+//     const startVideoStream = async () => {
+//         try {
+//             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+//             setVideoStream(stream);
+//             console.log("Video stream started successfully");
+//         } catch (err) {
+//             console.error("Error accessing video stream:", err);
+//         }
+//     };
+
+//     const stopVideoStream = useCallback(() => {
+//         if (videoStream) {
+//             videoStream.getTracks().forEach(track => track.stop());
+//             setVideoStream(null);
+//             console.log("Video stream stopped");
+//         }
+//     }, [videoStream]);
+
+//     useEffect(() => {
+//         return () => {
+//             stopVideoStream();
+//         };
+//     }, [stopVideoStream]);
+
+//     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
+//     const [answers, setAnswers] = useState<Answer[]>([]);
+//     const [isListening, setIsListening] = useState(false);
+//     const [isSpeaking, setIsSpeaking] = useState(false);
+//     const [timer, setTimer] = useState(30);
+//     const [isInterviewComplete, setIsInterviewComplete] = useState(false);
+//     const [isInterviewStarted, setIsInterviewStarted] = useState(false);
+//     const [isTransitioning, setIsTransitioning] = useState(false);
+//     const [currentTranscript, setCurrentTranscript] = useState('');
+
+//     const questions = test?.QuestionSet || [];
+//     const timerRef = useRef<NodeJS.Timeout | null>(null);
+//     const transitionRef = useRef<NodeJS.Timeout | null>(null);
+
+//     useEffect(() => {
+//         if (isInterviewStarted && currentQuestionIndex >= 0 && currentQuestionIndex < questions.length && !isInterviewComplete && !isTransitioning) {
+//             const speakingDelay = setTimeout(() => {
+//                 setIsSpeaking(true);
+//             }, 2000);
+
+//             return () => clearTimeout(speakingDelay);
+//         }
+//     }, [currentQuestionIndex, questions, isInterviewComplete, isInterviewStarted, isTransitioning]);
+
+//     const handleSpeechEnd = () => {
+//         setIsSpeaking(false);
+//         setIsListening(true);
+//         startTimer();
+//     };
+
+//     const startTimer = () => {
+//         setTimer(30);
+//         timerRef.current = setInterval(() => {
+//             setTimer((prevTimer) => {
+//                 if (prevTimer <= 1) {
+//                     clearInterval(timerRef.current!);
+//                     handleTimerEnd();
+//                     return 0;
+//                 }
+//                 return prevTimer - 1;
+//             });
+//         }, 1000);
+//     };
+
+//     const handleTimerEnd = () => {
+//         endAnswerPeriod();
+//     };
+
+//     const handleTranscriptUpdate = useCallback((transcript: string) => {
+//         setCurrentTranscript(transcript);
+//     }, []);
+
+//     const endAnswerPeriod = () => {
+//         setIsListening(false);
+//         clearInterval(timerRef.current!);
+
+//         const newAnswer: Answer = {
+//             question: questions[currentQuestionIndex].question,
+//             userAnswer: currentTranscript
+//         };
+
+//         setAnswers(prev => {
+//             const updatedAnswers = [...prev];
+//             updatedAnswers[currentQuestionIndex] = newAnswer;
+//             return updatedAnswers;
+//         });
+
+//         setIsTransitioning(true);
+//         transitionRef.current = setTimeout(() => {
+//             if (currentQuestionIndex < questions.length - 1) {
+//                 moveToNextQuestion();
+//             } else {
+//                 saveLastAnswerAndComplete();
+//             }
+//         }, 2000);
+//     };
+
+//     const moveToNextQuestion = () => {
+//         setIsTransitioning(false);
+//         setCurrentTranscript('');
+//         setCurrentQuestionIndex(prev => prev + 1);
+//     };
+
+//     // const saveLastAnswerAndComplete = async() => {
+//     //     setAnswers(prev => {
+//     //         const finalAnswers = [...prev];
+//     //         finalAnswers[currentQuestionIndex] = {
+//     //             question: questions[currentQuestionIndex].question,
+//     //             userAnswer: currentTranscript
+//     //         };
+//     //         return finalAnswers;
+//     //     });
+
+//     //     setAnswers(latestAnswers => {
+//     //         const fullAnswers = questions.map((q, index) => ({
+//     //             question: q.question,
+//     //             userAnswer: latestAnswers[index]?.userAnswer || ''
+//     //         }));
+
+
+//     //         console.log("Interview Completed", fullAnswers);
+//     //         // TODO: Submit answers to API
+
+//     //         setTimeout(() => setIsInterviewComplete(true), 0);
+
+//     //         return fullAnswers;
+//     //     });
+
+//     //     const getAnalytics = await Analysis({ answerSet: fullAnswers })
+//     // };
+
+//     const saveLastAnswerAndComplete = async () => {
+//         try {
+//             const updatedAnswers = [...answers];
+//             updatedAnswers[currentQuestionIndex] = {
+//                 question: questions[currentQuestionIndex].question,
+//                 userAnswer: currentTranscript
+//             };
+
+//             const fullAnswers = questions.map((q, index) => ({
+//                 question: q.question,
+//                 userAnswer: updatedAnswers[index]?.userAnswer || ''
+//             }));
+
+//             console.log("Interview Completed", fullAnswers);
+
+//             const analytics = await Analysis({ answerSet: fullAnswers });
+//             console.log("Analytics Data", analytics);
+
+//             setIsInterviewComplete(true);
+
+//         } catch (error) {
+//             console.error("Error during interview completion:", error);
+//         }
+//     };
+
+
+//     const handleDone = () => {
+//         if (isListening) {
+//             endAnswerPeriod();
+//         }
+//     };
+
+//     const startInterview = () => {
+//         setIsInterviewStarted(true);
+//         setCurrentQuestionIndex(0);
+//         startVideoStream();
+//     };
+
+//     useEffect(() => {
+//         return () => {
+//             if (timerRef.current) clearInterval(timerRef.current);
+//             if (transitionRef.current) clearTimeout(transitionRef.current);
+//         };
+//     }, []);
+
+//     if (!test) {
+//         return <div className="flex justify-center items-center h-screen bg-gray-100">
+//             <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+//         </div>;
+//     }
+
+//     return (
+//         <Proctor>
+//             <div className="min-h-screen bg-gray-100 flex flex-col">
+//                 <div className="relative w-full bg-[#4c2195] text-white p-4 flex justify-between items-center">
+//                     <h1 className='text-white font-bold text-xl'>Interview</h1>
+//                 </div>
+//                 <Separator />
+
+//                 {isInterviewStarted && <FloatingVideo videoStream={videoStream} />}
+
+//                 <main className="flex-grow flex flex-col items-center justify-center p-4">
+//                     {!isInterviewStarted ? (
+//                         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
+//                             <h2 className="text-2xl font-semibold mb-4">Welcome to Your Virtual Interview</h2>
+//                             <p className="mb-6">When you're ready to begin, click the button below.</p>
+//                             <button
+//                                 onClick={startInterview}
+//                                 className="bg-[#7C3AED] hover:bg-[#7430ea] text-white font-bold py-2 px-4 rounded transition duration-300"
+//                             >
+//                                 Start Your Interview
+//                             </button>
+//                         </div>
+//                     ) : !isInterviewComplete ? (
+//                         <div className="w-full max-w-4xl">
+//                             {isTransitioning ? (
+//                                 <div className="text-center py-8">
+//                                     <p className="text-xl">Moving to the next question...</p>
+//                                 </div>
+//                             ) : (
+//                                 <div className="bg-white rounded-lg shadow-lg p-6">
+//                                     <div className="mb-6">
+//                                         <h2 className="text-xl font-semibold mb-2">Question {currentQuestionIndex + 1}</h2>
+//                                         <h3 className="text-lg">{questions[currentQuestionIndex].question}</h3>
+//                                         <TextToSpeech
+//                                             text={questions[currentQuestionIndex].question}
+//                                             autoSpeak={isSpeaking}
+//                                             onSpeechEnd={handleSpeechEnd}
+//                                         />
+//                                     </div>
+
+//                                     <div className="flex-1">
+//                                         {isSpeaking ? (
+//                                             <p className="text-gray-600">Please listen to the question...</p>
+//                                         ) : (
+//                                             <>
+//                                                 <p className="mb-2">Time remaining: <span className="font-semibold">{timer} seconds</span></p>
+//                                                 <Dictaphone onTranscriptUpdate={handleTranscriptUpdate} isListening={isListening} />
+//                                                 <button
+//                                                     onClick={handleDone}
+//                                                     className="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+//                                                 >
+//                                                     Done
+//                                                 </button>
+//                                             </>
+//                                         )}
+//                                     </div>
+//                                 </div>
+//                             )}
+//                         </div>
+//                     ) : (
+//                         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
+//                             <h2 className="text-2xl font-semibold mb-4">Interview Complete</h2>
+//                             <p>Thank you for your responses. Your answers have been recorded.</p>
+//                             <Button className='mt-10' size={'default'} variant={'default'}>View Result</Button>
+//                         </div>
+//                     )}
+//                 </main>
+
+//                 <div className="w-full bg-[#4c2195] text-white p-3 flex justify-center items-center mt-auto">
+//                     <p className="text-sm font-bold">© Axiom, All Rights Reserved</p>
+//                 </div>
+//             </div>
+//         </Proctor>
+//     );
+// };
+
+// export default InterviewPage;
+
+
+
+
+
+
+
+"use client"
+
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useAction, useMutation, useQuery } from "convex/react";
+import { useParams } from 'next/navigation';
+import TextToSpeech from "../../components/textToSpeech";
+import Dictaphone from "../../components/speechRecognition";
+import { api } from "@/convex/_generated/api";
 import { Separator } from '@/components/ui/separator';
-import React, { useState, useEffect } from 'react';
 import Proctor from '../../Proctor';
-import { useParams, useRouter } from 'next/navigation';
-import Modals from '../../components/Modals';
-import { api } from "../../../../convex/_generated/api"
-import { useQuery, useMutation } from "convex/react";
-import Loader from '@/components/ui/Loader';
-import { useLoader } from '@/app/LoaderContext';
+import { Button } from '@/components/ui/button';
 import { useAuth } from '@clerk/clerk-react';
+// import Loader from '@/components/ui/Loader';
+import { useLoader } from '@/app/LoaderContext';
+import { useRouter } from 'next/navigation';
 
-const TestPage = () => {
-    const { userId } = useAuth();
-    const { testId } = useParams() as {testId : string};
-    const testIdString = Array.isArray(testId) ? testId[0] : testId;
-    const test = useQuery(api.GetTest.getFTestById, { testId: testIdString as string });
-    const pushTestAnswer = useMutation(api.pushAnswer.push_test_answer);
-    const UpdateTotalInteraction = useMutation(api.TotalInteractions.Push_totalInteractions);
-    const UpdateDailyInteraction = useMutation(api.DailyInteractions.Push_TodayInteraction);
+import dynamic from 'next/dynamic';
+const Loader = dynamic(() => import('@/components/ui/Loader'), { ssr: false });
 
-    const jobTitle = useQuery(api.FindTest.getFJTbyTestId, { testId: testIdString as string }) || '';
-    console.log(jobTitle);
 
-    const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
-    const [timeLeft, setTimeLeft] = useState(600); // 10 minutes
-    const [showExitModal, setShowExitModal] = useState(false);
+interface Answer {
+    question: string;
+    userAnswer: string;
+}
+
+const FloatingVideo: React.FC<{ videoStream: MediaStream | null }> = ({ videoStream }) => {
+    const videoRef = useRef<HTMLVideoElement | null>(null);
+
+    useEffect(() => {
+        if (videoRef.current && videoStream) {
+            videoRef.current.srcObject = videoStream;
+        }
+    }, [videoStream]);
+
+    return (
+        <div className="fixed top-4 right-4 z-50">
+            <div className="w-48 h-36 bg-gray-200 rounded-lg overflow-hidden shadow-lg">
+                <video
+                    ref={videoRef}
+                    autoPlay
+                    playsInline
+                    muted
+                    className="w-full h-full object-cover"
+                />
+            </div>
+        </div>
+    );
+};
+
+const InterviewPage: React.FC = () => {
+
+    const { userId } = useAuth() as { userId: string };
+    const { InterviewId } = useParams() as { InterviewId: string };
+    const testIdString = Array.isArray(InterviewId) ? InterviewId[0] : InterviewId;
+    const test = useQuery(api.GetInterview.getFInterviewById, { InterviewId: testIdString });
+    const Analysis = useAction(api.InterviewAnalytics.createAnalytics);
+
     const [isLoading, setIsLoading] = useState(true);
     const { showLoader, hideLoader } = useLoader();
     const [routeId, setRouteId] = useState<string | null>(null);
 
     const router = useRouter();
 
-    if (!userId) {
-        router.push("/");
-    }
+    const pushResult = useMutation(api.pushInterviewAnswer.push_interview_answer);
+
+    const UpdateTotalInteraction = useMutation(api.TotalInteractions.Push_totalInteractions);
+    const UpdateDailyInteraction = useMutation(api.DailyInteractions.Push_TodayInteraction);
+    const updateLeaderboard = useMutation(api.LeaderBoard.updateLeaderboard);
+
+
+    const jobTitle = useQuery(api.FindInterview.getJTbyInterviewId,{InterviewId:InterviewId});
+
+    const [videoStream, setVideoStream] = useState<MediaStream | null>(null);
+
+    const startVideoStream = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            setVideoStream(stream);
+            console.log("Video stream started successfully");
+        } catch (err) {
+            console.error("Error accessing video stream:", err);
+        }
+    };
+
+    const stopVideoStream = useCallback(() => {
+        if (videoStream) {
+            videoStream.getTracks().forEach(track => track.stop());
+            setVideoStream(null);
+            console.log("Video stream stopped");
+        }
+    }, [videoStream]);
+
 
     useEffect(() => {
         showLoader();
         if (test && test.QuestionSet) {
             setIsLoading(false);
-            setSelectedAnswers(new Array(test.QuestionSet.length).fill(-1));
             hideLoader();
         }
     }, [test]);
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft(prevTime => {
-                if (prevTime <= 1) {
-                    clearInterval(timer);
-                    handleSubmit();
+        return () => {
+            stopVideoStream();
+        };
+    }, [stopVideoStream]);
+
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
+    const [answers, setAnswers] = useState<Answer[]>([]);
+    const [isListening, setIsListening] = useState(false);
+    const [isSpeaking, setIsSpeaking] = useState(false);
+    const [timer, setTimer] = useState(30);
+    const [isInterviewComplete, setIsInterviewComplete] = useState(false);
+    const [isInterviewStarted, setIsInterviewStarted] = useState(false);
+    const [isTransitioning, setIsTransitioning] = useState(false);
+    const [currentTranscript, setCurrentTranscript] = useState('');
+    const [isTimerEnded, setIsTimerEnded] = useState(false);
+
+    const questions = test?.QuestionSet || [];
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
+    const transitionRef = useRef<NodeJS.Timeout | null>(null);
+
+    useEffect(() => {
+        if (isInterviewStarted && currentQuestionIndex >= 0 && currentQuestionIndex < questions.length && !isInterviewComplete && !isTransitioning) {
+            const speakingDelay = setTimeout(() => {
+                setIsSpeaking(true);
+            }, 2000);
+
+            return () => clearTimeout(speakingDelay);
+        }
+    }, [currentQuestionIndex, questions, isInterviewComplete, isInterviewStarted, isTransitioning]);
+
+    const handleSpeechEnd = () => {
+        setIsSpeaking(false);
+        setIsListening(true);
+        startTimer();
+    };
+
+    const startTimer = () => {
+        setTimer(30);
+        setIsTimerEnded(false);
+        timerRef.current = setInterval(() => {
+            setTimer((prevTimer) => {
+                if (prevTimer <= 1) {
+                    clearInterval(timerRef.current!);
+                    handleTimerEnd();
                     return 0;
                 }
-                return prevTime - 1;
+                return prevTimer - 1;
             });
         }, 1000);
+    };
 
-        window.history.pushState(null, '', window.location.href);
-        window.addEventListener('popstate', handlePopState);
+    const handleTimerEnd = () => {
+        setIsListening(false);
+        setIsTimerEnded(true);
+    };
 
-        return () => {
-            clearInterval(timer);
-            window.removeEventListener('popstate', handlePopState);
-        };
+    const handleTranscriptUpdate = useCallback((transcript: string) => {
+        setCurrentTranscript(transcript);
     }, []);
 
-    const handlePopState = (event: any) => {
-        event.preventDefault();
-        setShowExitModal(true);
-        window.history.pushState(null, '', window.location.href);
+    const saveAnswerAndMoveNext = () => {
+        const newAnswer: Answer = {
+            question: questions[currentQuestionIndex].question,
+            userAnswer: currentTranscript
+        };
+
+        setAnswers(prev => {
+            const updatedAnswers = [...prev];
+            updatedAnswers[currentQuestionIndex] = newAnswer;
+            return updatedAnswers;
+        });
+
+        if (currentQuestionIndex < questions.length - 1) {
+            moveToNextQuestion();
+        } else {
+            saveLastAnswerAndComplete();
+        }
     };
 
-    const handleExitConfirm = () => {
-        setShowExitModal(false);
-        router.push('/exploreTest');
+    const moveToNextQuestion = () => {
+        setIsTransitioning(true);
+        setCurrentTranscript('');
+        setIsTimerEnded(false);
+
+        transitionRef.current = setTimeout(() => {
+            setIsTransitioning(false);
+            setCurrentQuestionIndex(prev => prev + 1);
+        }, 2000);
     };
 
-    const handleExitCancel = () => {
-        setShowExitModal(false);
-    };
-
-    const handleOptionChange = (index: number) => {
-        const updatedAnswers = [...selectedAnswers];
-        updatedAnswers[currentQuestion] = index;
-        setSelectedAnswers(updatedAnswers);
-    };
-
-    const handleQuestionClick = (index: number) => {
-        setCurrentQuestion(index);
-    };
-
-    const handleSubmit = async () => {
+    const saveLastAnswerAndComplete = async () => {
         showLoader();
-        if (!test || !test.QuestionSet) {
-            console.error("Test data is not available");
-            return;
-        }
-        if (!userId) {
-            console.error("UserId is not available");
-            return;
-        }
-        if(!jobTitle){
-            console.error("JobTitle is not available");
-            return;
-        }
-
-        const answerSet = test.QuestionSet.map((question: any, index: any) => ({
-            question: question.question,
-            userAnswer: question.options[selectedAnswers[index]] || "",
-            correctAnswer: question.options[parseInt(question.answer) - 1] || "",
-            providedOptions: question.options
-        }));
-
         try {
-            const answerId = await pushTestAnswer({
-                userId: userId,
-                testId: testIdString,
-                jobTitle:jobTitle,
-                answerSet: answerSet
-            });
+            const updatedAnswers = [...answers, {
+                question: questions[currentQuestionIndex].question,
+                userAnswer: currentTranscript
+            }];
 
-            console.log(answerId);
+            const fullAnswers = questions.map((q, index) => ({
+                question: q.question,
+                userAnswer: updatedAnswers[index]?.userAnswer || ''
+            }));
 
-            if (answerId) {
-                const TotalInteractionId = await UpdateTotalInteraction({ userId: userId })
-                console.log("TotalInteractions : ", TotalInteractionId);
-                const DailyInteractionId = await UpdateDailyInteraction({ userId: userId })
-                console.log("DailyInteractionId : ", DailyInteractionId);
+            console.log("Interview Completed", fullAnswers);
 
-                setRouteId(answerId);
+            const analytics = await Analysis({ answerSet: fullAnswers });
+            console.log("Analytics Data", analytics);
+
+            if(jobTitle && analytics){
+                const feedResult = await pushResult({
+                    userId: userId || '', // Provide a default value
+                    InterviewId: InterviewId || '', // Provide a default value
+                    jobTitle: jobTitle || '', // Ensure jobTitle is defined
+                    analytics: analytics,
+                    answerSet: fullAnswers
+                })
+                console.log("feedResult", feedResult);
+                // setRouteId(feedResult);
+
+                if (feedResult) {
+                    const TotalInteractionId = await UpdateTotalInteraction({ userId: userId })
+                    console.log("TotalInteractions : ", TotalInteractionId);
+                    const DailyInteractionId = await UpdateDailyInteraction({ userId: userId })
+                    console.log("DailyInteractionId : ", DailyInteractionId);
+
+                    const x = await updateLeaderboard({ userId: userId, additionalPoints: analytics && Number(analytics[0].score), additionalAccuracy: 0 });
+                    console.log('Leaderboard Updated ',x)
+
+                    setRouteId(feedResult);
+                }
             }
+           
+            setIsInterviewComplete(true);
+
         } catch (error) {
-            console.error("Error submitting test:", error);
+            console.error("Error during interview completion:", error);
+        }finally{
+            hideLoader();
         }
+    };
+
+    const startInterview = () => {
+        setIsInterviewStarted(true);
+        setCurrentQuestionIndex(0);
+        startVideoStream();
     };
 
     useEffect(() => {
-        if (routeId != null) {
-            router.push(`/${testId}/featuredStart/${routeId}`);
-        }
-    }, [routeId])
+        return () => {
+            if (timerRef.current) clearInterval(timerRef.current);
+            if (transitionRef.current) clearTimeout(transitionRef.current);
+        };
+    }, []);
 
-    const handleAutoSubmit = () => {
-        alert("Test is being auto-submitted due to tab changes.");
-        handleSubmit();
-    };
-
-    const formatTime = (seconds: number) => {
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-    };
-
-    if (isLoading) {
-        return <Loader />;
-    }
-
-    const currentQuestionData = test?.QuestionSet[currentQuestion];
 
     return (
-        <Proctor onAutoSubmit={handleAutoSubmit}>
-            <div className="flex flex-col h-screen w-screen overflow-hidden">
+        <Proctor>
+            <div className="min-h-screen bg-gray-100 flex flex-col">
                 <div className="relative w-full bg-[#4c2195] text-white p-4 flex justify-between items-center">
-                    <Heading >Test</Heading>
-                    <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-white rounded-full shadow-lg w-32 h-16 flex justify-center items-center">
-                        <span className="font-mono text-black text-lg">
-                            {formatTime(timeLeft)}
-                        </span>
-                    </div>
-                    <Button size={'sm'} variant={'destructive'} onClick={handleSubmit}>Submit Test</Button>
+                    <h1 className='text-white font-bold text-xl'>Interview</h1>
                 </div>
                 <Separator />
-                <div className="flex-grow overflow-auto">
-                    <div className='flex flex-row items-start justify-between pt-5 gap-5 h-[70%]'>
-                        <div className="bg-slate-200 h-full w-[60%] p-20 rounded-xl">
-                            <div className="question-side">
-                                <h2 className='font-bold text-2xl pb-5'>{`Question ${currentQuestion + 1}: ${currentQuestionData?.question}`}</h2>
-                                {currentQuestionData?.options.map((option: any, index: any) => (
-                                    <div className='flex items-center gap-4 pb-2' key={index}>
-                                    <input
-                                        type="radio"
-                                        name="option"
-                                        checked={selectedAnswers[currentQuestion] === index}
-                                        onChange={() => handleOptionChange(index)}
-                                        className='w-6 h-6'
-                                    />
-                                    <label className='text-lg ml-2'>
-                                        {option}
-                                    </label>
-                                </div>
-                                ))}
-                            </div>
-                        </div>
-                        <div className='bg-slate-200 h-full w-[40%] rounded-xl'>
-                            <div className="p-20 grid gap-8 grid-cols-4">
-                                {test?.QuestionSet.map((_: any, index: any) => {
-                                    const isSelected = selectedAnswers[index] !== -1;
-                                    const isActive = currentQuestion === index;
-                                    const buttonColor = isActive
-                                        ? 'bg-[#7C3AED]'
-                                        : isSelected
-                                            ? 'bg-[#E9D5FF]'
-                                            : 'bg-gray-400';
 
-                                    return (
-                                        <button
-                                            key={index}
-                                            className={`h-10 w-10 rounded-lg ${buttonColor}`}
-                                            onClick={() => handleQuestionClick(index)}
-                                        >
-                                            {index + 1}
-                                        </button>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    </div>
-                    <div className='pt-10'>
-                        <Separator />
-                        <div className="flex flex-row items-center justify-between px-20 py-4">
-                            <Button
-                                onClick={() => setCurrentQuestion((prev) => Math.max(prev - 1, 0))}
-                                disabled={currentQuestion === 0}
+                {isInterviewStarted && <FloatingVideo videoStream={videoStream} />}
+
+                <main className="flex-grow flex flex-col items-center justify-center p-4">
+                    {!isInterviewStarted ? (
+                        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
+                            <h2 className="text-2xl font-semibold mb-4">Welcome to Your Virtual Interview</h2>
+                            <p className="mb-6">When you're ready to begin, click the button below.</p>
+                            <button
+                                onClick={startInterview}
+                                className="bg-[#7C3AED] hover:bg-[#7430ea] text-white font-bold py-2 px-4 rounded transition duration-300"
                             >
-                                Previous
-                            </Button>
-                            <Button
-                                onClick={() => setCurrentQuestion((prev) => Math.min(prev + 1, (test?.QuestionSet?.length ?? 0) - 1))}
-                                disabled={currentQuestion === (test?.QuestionSet?.length ?? 0) - 1}
-                            >
-                                Next
-                            </Button>
+                                Start Your Interview
+                            </button>
                         </div>
-                    </div>
-                </div>
+                    ) : !isInterviewComplete ? (
+                        <div className="w-full max-w-4xl">
+                            {isTransitioning ? (
+                                <div className="text-center py-8">
+                                    <p className="text-xl">Moving to the next question...</p>
+                                </div>
+                            ) : (
+                                <div className="bg-white rounded-lg shadow-lg p-6">
+                                    <div className="mb-6">
+                                        <h2 className="text-xl font-semibold mb-2">Question {currentQuestionIndex + 1}</h2>
+                                        <h3 className="text-lg">{questions[currentQuestionIndex].question}</h3>
+                                        <TextToSpeech
+                                            text={questions[currentQuestionIndex].question}
+                                            autoSpeak={isSpeaking}
+                                            onSpeechEnd={handleSpeechEnd}
+                                        />
+                                    </div>
+
+                                    <div className="flex-1">
+                                        {isSpeaking ? (
+                                            <p className="text-gray-600">Please listen to the question...</p>
+                                        ) : (
+                                            <>
+                                                <p className="mb-2">Time remaining: <span className="font-semibold">{timer} seconds</span></p>
+                                                <Dictaphone onTranscriptUpdate={handleTranscriptUpdate} isListening={isListening} />
+                                                {isTimerEnded && (
+                                                    <button
+                                                        onClick={saveAnswerAndMoveNext}
+                                                        className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+                                                    >
+                                                        Next Question
+                                                    </button>
+                                                )}
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
+                            <h2 className="text-2xl font-semibold mb-4">Interview Complete</h2>
+                            <p>Thank you for your responses. Your answers have been recorded.</p>
+                            <Button onClick={()=>{showLoader(); router.push(`/interview/${InterviewId}/start/${routeId}`)}} className='mt-10' size={'default'} variant={'default'}>View Result</Button>
+                        </div>
+                    )}
+                </main>
+
                 <div className="w-full bg-[#4c2195] text-white p-3 flex justify-center items-center mt-auto">
-                    <p className="text-sm font-bold">© Axiom , All Rights Reserved</p>
+                    <p className="text-sm font-bold">© Axiom, All Rights Reserved</p>
                 </div>
             </div>
-
-            {showExitModal && (
-                <Modals head='Exit Test' alert='Are you sure you want to exit the test? Your progress will be lost.' action={handleExitConfirm} button='Exit' />
-            )}
             <Loader />
         </Proctor>
     );
 };
 
-export default TestPage;
+export default InterviewPage;

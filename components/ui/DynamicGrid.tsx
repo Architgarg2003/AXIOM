@@ -31,8 +31,9 @@ const DynamicGrid = ({ cardsData }: DynamicGridIP) => {
 
 
     return (
-        <div className="p-5 pt-0 w-[95%] overflow-hidden pr-10 ">
-            <div className="grid grid-cols-4 grid-rows-3 gap-5">
+        <div className="p-0 md:p-5 pt-0 w-[95%] overflow-hidden pr-0 md:pr-10 data-uk-grid">
+            {/* <div className="grid grid-cols-4 grid-rows-3 gap-5"> */}
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {paginatedItems.map((card, index) => (
                     <div key={index}>{card.content}</div>
                 ))}

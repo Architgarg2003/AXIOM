@@ -141,10 +141,12 @@ const GeneratedTests = ({ allCards }: GeneratedTestsI) => {
   })) || [];
 
   return (
-    <div className="pt-6 pl-[4rem]">
-      <Heading>Generated Tests</Heading>
-      <div className='flex flex-col gap-10 pt-6'>
-        <div className='flex items-center justify-center px-5'>
+    <div className="md:pt-6 pt-2 md:pl-[4rem] pl-4">
+      <Heading className=" sm:text-3xl text-2xl lg:text-3xl xl:text-4xl">
+        Generated Tests
+      </Heading>
+      <div className='flex flex-col gap-6 md:gap-10 pt-3 md:pt-6'>
+        <div className='flex items-center justify-center  md:px-5'>
           <SearchBar
             search={search}
             setSearch={setSearch}
@@ -155,6 +157,7 @@ const GeneratedTests = ({ allCards }: GeneratedTestsI) => {
         </div>
       </div>
     </div>
+
   );
 }
 

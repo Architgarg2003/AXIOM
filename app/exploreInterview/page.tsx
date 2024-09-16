@@ -11,11 +11,11 @@ import { useRouter } from 'next/navigation';
 
 
 import dynamic from 'next/dynamic';
-import GeneratedInterview from '@/components/GeneratedInterview';
+// import GeneratedInterview from '@/components/GeneratedInterview';
 
 const Loader = dynamic(() => import('@/components/ui/Loader'), { ssr: false });
 const NewModal = dynamic(() => import('@/components/NewModal'), { ssr: false });
-const GeneratedTests = dynamic(() => import('@/components/GeneratedTests'), { ssr: false });
+const GeneratedInterview = dynamic(() => import('@/components/GeneratedInterview'), { ssr: false });
 const Featured = dynamic(() => import('@/components/Featured'), { ssr: false });
 
 const Test = () => {
@@ -35,7 +35,7 @@ const Test = () => {
   const createEmbedding = useAction(api.createEmbedding.createEmbeddings);
   const allCards = useQuery(api.getAll_interviewGeneratedCards.getAllInterviewGeneratedCards);
   // fearured cards
-  const allFeaturedCards = useQuery(api.getAllFeaturedCards.getAllFeaturedCards);
+  const allFeaturedCards = useQuery(api.getAllFeaturedInterviewCards.getAllFeaturedInterviewCards);
   // 
   const heatmapfunction = useMutation(api.PushHeatMap.handleDailyInteraction);
   const LeaderBoardEntry = useMutation(api.LeaderBoard.ensureLeaderboardEntry);
@@ -141,7 +141,7 @@ const Test = () => {
             </span>
           </h1>
         </div>
-        <div className="px-20 py-[4.5rem] pb-2">
+        <div className="px-20 py-[4.5rem] pb-2 hidden md:block">
           <NewModal
             handleGenerateMCQ={handleGenerateMCQ}
             setJd={setJd}

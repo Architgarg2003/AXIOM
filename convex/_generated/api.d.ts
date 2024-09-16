@@ -41,6 +41,7 @@ import type * as create_interview from "../create_interview.js";
 import type * as create_mcq from "../create_mcq.js";
 import type * as fetchFiles from "../fetchFiles.js";
 import type * as getAllFeaturedCards from "../getAllFeaturedCards.js";
+import type * as getAllFeaturedInterviewCards from "../getAllFeaturedInterviewCards.js";
 import type * as getAllGeneratedCards from "../getAllGeneratedCards.js";
 import type * as getAll_interviewGeneratedCards from "../getAll_interviewGeneratedCards.js";
 import type * as messages from "../messages.js";
@@ -86,6 +87,7 @@ declare const fullApi: ApiFromModules<{
   create_mcq: typeof create_mcq;
   fetchFiles: typeof fetchFiles;
   getAllFeaturedCards: typeof getAllFeaturedCards;
+  getAllFeaturedInterviewCards: typeof getAllFeaturedInterviewCards;
   getAllGeneratedCards: typeof getAllGeneratedCards;
   getAll_interviewGeneratedCards: typeof getAll_interviewGeneratedCards;
   messages: typeof messages;

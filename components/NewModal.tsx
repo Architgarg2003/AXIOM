@@ -460,43 +460,43 @@ const NewModal = ({ isInterview, handleGenerateMCQ, setJd, setResume, setJobTitl
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button
-                    className='bg-black rounded-full text-white capitalize inline-flex'
-                    size="lg"
+                    className='bg-black rounded-full text-white capitalize inline-flex text-sm sm:text-base mt-4 md:mt-0 mr-2 md:mr-0'
+                    size="sm"
                 >
                     create new
-                    <Plus />
+                    <Plus className="w-4 h-4 ml-2" />
                 </Button>
             </DialogTrigger>
-            <DialogContent className="h-max w-[90rem]">
+            <DialogContent className="md:w-[40vw] w-[95vw] max-w-[90rem] h-[90vh] overflow-y-auto p-4 sm:p-6">
                 <DialogHeader>
-                    <DialogTitle>Create New {isInterview ? " Interview" : " Test"}</DialogTitle>
-                    <DialogDescription>
-                        Create a custom {isInterview ? " interview " : " test "} tailored just for you using AI.
+                    <DialogTitle className="text-xl sm:text-2xl">Create New {isInterview ? "Interview" : "Test"}</DialogTitle>
+                    <DialogDescription className="text-sm sm:text-base">
+                        Create a custom {isInterview ? "interview" : "test"} tailored just for you using AI.
                     </DialogDescription>
                 </DialogHeader>
-                <form onSubmit={handleSubmit}>
-                    <div className='gap-4'>
-                        <Label htmlFor="jobTitle" className="text-right">
+                <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+                    <div className='space-y-2'>
+                        <Label htmlFor="jobTitle" className="text-sm sm:text-base">
                             Job Title
                         </Label>
                         <Input
                             id="jobTitle"
-                            className="col-span-3"
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setJobTitle(e.target.value)}
+                            className="w-full"
+                            onChange={(e) => setJobTitle(e.target.value)}
                         />
                     </div>
-                    <div className='gap-4'>
-                        <Label htmlFor="companyName" className="text-right">
+                    <div className='space-y-2'>
+                        <Label htmlFor="companyName" className="text-sm sm:text-base">
                             Company Name
                         </Label>
                         <Input
                             id="companyName"
-                            className="col-span-3"
-                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCompanyName(e.target.value)}
+                            className="w-full"
+                            onChange={(e) => setCompanyName(e.target.value)}
                         />
                     </div>
-                    <div>
-                        <Label htmlFor="jobDescription" className="text-right">
+                    <div className='space-y-2'>
+                        <Label htmlFor="jobDescription" className="text-sm sm:text-base">
                             Job Description
                         </Label>
                         <Input
@@ -504,15 +504,16 @@ const NewModal = ({ isInterview, handleGenerateMCQ, setJd, setResume, setJobTitl
                             id="jobDescription"
                             type="file"
                             onChange={(e) => handleFileUpload(e, setJd)}
+                            className="w-full"
                         />
                     </div>
-                    <div>
-                        <Label htmlFor="resume" className="text-right pb-1">
+                    <div className='space-y-2'>
+                        <Label htmlFor="resume" className="text-sm sm:text-base">
                             Resume
                         </Label>
                         <Select onValueChange={handleResumeSelection}>
                             <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select a resume " />
+                                <SelectValue placeholder="Select a resume" />
                             </SelectTrigger>
                             <SelectContent>
                                 {getUserResumes?.map((resume, index) => (
@@ -528,15 +529,15 @@ const NewModal = ({ isInterview, handleGenerateMCQ, setJd, setResume, setJobTitl
                             type="file"
                             ref={fileInputRef}
                             onChange={(e) => handleFileUpload(e, setResume)}
-                            className="mt-2"
+                            className="w-full mt-2"
                         />
                     </div>
-                    <div>
-                        <Label htmlFor="difficulty" className="text-right">
+                    <div className='space-y-2'>
+                        <Label htmlFor="difficulty" className="text-sm sm:text-base">
                             Difficulty Level
                         </Label>
                         <Select onValueChange={setDifficulty}>
-                            <SelectTrigger className="w-[180px]">
+                            <SelectTrigger className="w-full">
                                 <SelectValue placeholder="Select" />
                             </SelectTrigger>
                             <SelectContent>
@@ -551,8 +552,7 @@ const NewModal = ({ isInterview, handleGenerateMCQ, setJd, setResume, setJobTitl
                     <DialogFooter>
                         <Button
                             type="submit"
-                            className="bg-[#141414] rounded-full text-white p-3"
-                            size="sm"
+                            className="bg-[#141414] rounded-full text-white p-2 sm:p-3 text-sm sm:text-base w-full sm:w-auto"
                             disabled={uploading}
                         >
                             {uploading ? 'Uploading...' : 'Upload and Start'}

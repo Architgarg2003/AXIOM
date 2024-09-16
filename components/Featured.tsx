@@ -107,7 +107,7 @@ interface FeaturedI{
 
 const Featured = ({ allFeaturedCards }: FeaturedI) => {
     return (
-        <div className="pt-6 pl-[4rem] pr-20">
+        <div className="md:pt-6 p-2 md:pl-[4rem] md:pr-20">
             <Heading>Featured</Heading>
             {/* <Carousel
                 opts={{
@@ -132,7 +132,7 @@ const Featured = ({ allFeaturedCards }: FeaturedI) => {
             <div className='w-full flex flex-row overflow-x-scroll h-max overflow-hidden '>
                 {allFeaturedCards?.map((data:any, index:any) => (
                         <div key={index} className="p-5 flex-row inline-flex p">
-                            <Cards data={data}/>
+                            <Cards data={data} isInterview={true}/>
                         </div>
                 ))}
             </div>
