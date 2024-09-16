@@ -381,88 +381,184 @@ export default function BucketCards({
     };
 
     return (
+        // <Card
+        //     shadow="sm"
+        //     className="w-[20rem] rounded-2xl border border-gray-400"
+        // >
+        //     <CardBody className="p-2 bg-white rounded-t-2xl w-full h-[18rem] flex flex-col">
+        //         <div
+        //             style={{ backgroundColor: getRandomColor() }}
+        //             className="w-full h-full rounded-xl flex flex-col justify-between"
+        //         >
+        //             <div className="flex flex-col items-start text-left pt-8 pl-4 pr-4 max-w-full">
+        //                 <p className="text-md font-semibold">{currentCardData?.companyName}</p>
+        //                 <h1 className="text-2xl font-bold w-full break-words whitespace-normal mb-2">
+        //                     {currentCardData?.jobTitle}
+        //                 </h1>
+        //                 <div className="flex flex-row items-start gap-3 flex-wrap">
+        //                     {currentCardData?.tags.slice(0, 2).map((tag, index) => (
+        //                         <Badge
+        //                             key={index}
+        //                             size={"sm"}
+        //                             className="border-gray-400 text-sm rounded-full"
+        //                             variant="outline"
+        //                         >
+        //                             {tag}
+        //                         </Badge>
+        //                     ))}
+        //                 </div>
+        //             </div>
+        //             <div className="flex flex-row items-end justify-between p-3">
+        //                 <div className="flex gap-1">
+        //                     <Toggle
+        //                         variant="outline"
+        //                         aria-label="Toggle star"
+        //                         className="bg-white"
+        //                         pressed={isStarred}
+        //                         onPressedChange={handleStarToggle}
+        //                     >
+        //                         <AnimatePresence mode="wait">
+        //                             <motion.div
+        //                                 key={isStarred ? 'starred' : 'unstarred'}
+        //                                 initial={{ scale: 1 }}
+        //                                 animate={isStarred ? 'active' : 'inactive'}
+        //                                 variants={starVariants}
+        //                                 style={{ display: 'inline-block' }}
+        //                             >
+        //                                 {isStarred ? (
+        //                                     <TiStarFullOutline className="text-purple-500 h-5 w-5" />
+        //                                 ) : (
+        //                                     <TiStarOutline className="text-black h-5 w-5" />
+        //                                 )}
+        //                             </motion.div>
+        //                         </AnimatePresence>
+        //                     </Toggle>
+        //                     <Toggle
+        //                         variant="outline"
+        //                         className="bg-white"
+        //                         pressed={isLiked}
+        //                         onPressedChange={handleLikeToggle}
+        //                     >
+        //                         <AnimatePresence mode="wait">
+        //                             <motion.div
+        //                                 key={isLiked ? 'liked' : 'unliked'}
+        //                                 initial={{ scale: 1 }}
+        //                                 animate={isLiked ? 'liked' : 'unliked'}
+        //                                 variants={heartVariants}
+        //                                 style={{ display: 'inline-block' }}
+        //                             >
+        //                                 {isLiked ? (
+        //                                     <AiFillHeart className="text-purple-500 h-5 w-5" />
+        //                                 ) : (
+        //                                     <AiOutlineHeart className="text-black h-5 w-5" />
+        //                                 )}
+        //                             </motion.div>
+        //                         </AnimatePresence>
+        //                         <span className='pl-1 text-md'>{likeCount}</span>
+        //                     </Toggle>
+        //                 </div>
+        //                 <div>
+        //                     <PreModal jobTitle={currentCardData?.jobTitle} companyName={currentCardData?.companyName} tags={currentCardData?.tags} testId={cardData?.testId} InterviewId={InterviewCardData?.InterviewId}  isInterview={isInterview} />
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     </CardBody>
+        // </Card>
+
         <Card
-            shadow="sm"
-            className="w-[20rem] rounded-2xl border border-gray-400"
+    shadow="sm"
+    className="w-[17rem] md:w-[20rem] rounded-2xl border border-gray-400"
+>
+    <CardBody className="p-2 bg-white rounded-t-2xl w-full h-[16rem] md:h-[18rem] flex flex-col">
+        <div
+            style={{ backgroundColor: getRandomColor() }}
+            className="w-full h-full rounded-xl flex flex-col justify-between"
         >
-            <CardBody className="p-2 bg-white rounded-t-2xl w-full h-[18rem] flex flex-col">
-                <div
-                    style={{ backgroundColor: getRandomColor() }}
-                    className="w-full h-full rounded-xl flex flex-col justify-between"
-                >
-                    <div className="flex flex-col items-start text-left pt-8 pl-4 pr-4 max-w-full">
-                        <p className="text-md font-semibold">{currentCardData?.companyName}</p>
-                        <h1 className="text-2xl font-bold w-full break-words whitespace-normal mb-2">
-                            {currentCardData?.jobTitle}
-                        </h1>
-                        <div className="flex flex-row items-start gap-3 flex-wrap">
-                            {currentCardData?.tags.slice(0, 2).map((tag, index) => (
-                                <Badge
-                                    key={index}
-                                    size={"sm"}
-                                    className="border-gray-400 text-sm rounded-full"
-                                    variant="outline"
-                                >
-                                    {tag}
-                                </Badge>
-                            ))}
-                        </div>
-                    </div>
-                    <div className="flex flex-row items-end justify-between p-3">
-                        <div className="flex gap-1">
-                            <Toggle
-                                variant="outline"
-                                aria-label="Toggle star"
-                                className="bg-white"
-                                pressed={isStarred}
-                                onPressedChange={handleStarToggle}
-                            >
-                                <AnimatePresence mode="wait">
-                                    <motion.div
-                                        key={isStarred ? 'starred' : 'unstarred'}
-                                        initial={{ scale: 1 }}
-                                        animate={isStarred ? 'active' : 'inactive'}
-                                        variants={starVariants}
-                                        style={{ display: 'inline-block' }}
-                                    >
-                                        {isStarred ? (
-                                            <TiStarFullOutline className="text-purple-500 h-5 w-5" />
-                                        ) : (
-                                            <TiStarOutline className="text-black h-5 w-5" />
-                                        )}
-                                    </motion.div>
-                                </AnimatePresence>
-                            </Toggle>
-                            <Toggle
-                                variant="outline"
-                                className="bg-white"
-                                pressed={isLiked}
-                                onPressedChange={handleLikeToggle}
-                            >
-                                <AnimatePresence mode="wait">
-                                    <motion.div
-                                        key={isLiked ? 'liked' : 'unliked'}
-                                        initial={{ scale: 1 }}
-                                        animate={isLiked ? 'liked' : 'unliked'}
-                                        variants={heartVariants}
-                                        style={{ display: 'inline-block' }}
-                                    >
-                                        {isLiked ? (
-                                            <AiFillHeart className="text-purple-500 h-5 w-5" />
-                                        ) : (
-                                            <AiOutlineHeart className="text-black h-5 w-5" />
-                                        )}
-                                    </motion.div>
-                                </AnimatePresence>
-                                <span className='pl-1 text-md'>{likeCount}</span>
-                            </Toggle>
-                        </div>
-                        <div>
-                            <PreModal jobTitle={currentCardData?.jobTitle} companyName={currentCardData?.companyName} tags={currentCardData?.tags} testId={cardData?.testId} InterviewId={InterviewCardData?.InterviewId}  isInterview={isInterview} />
-                        </div>
-                    </div>
+            <div className="flex flex-col items-start text-left pt-6 md:pt-8 pl-3 pr-3 max-w-full">
+                <p className="text-sm md:text-md font-semibold">
+                    {currentCardData?.companyName}
+                </p>
+                <h1 className="text-xl md:text-2xl font-bold w-full break-words whitespace-normal mb-2">
+                    {currentCardData?.jobTitle}
+                </h1>
+                <div className="flex flex-row items-start gap-2 md:gap-3 flex-wrap">
+                    {currentCardData?.tags.slice(0, 2).map((tag, index) => (
+                        <Badge
+                            key={index}
+                            size={"sm"}
+                            className="border-gray-400 text-xs md:text-sm rounded-full"
+                            variant="outline"
+                        >
+                            {tag}
+                        </Badge>
+                    ))}
                 </div>
-            </CardBody>
-        </Card>
+            </div>
+            <div className="flex flex-row items-end justify-between p-2 md:p-3">
+                <div className="flex gap-1">
+                    <Toggle
+                        variant="outline"
+                        aria-label="Toggle star"
+                        className="bg-white"
+                        pressed={isStarred}
+                        onPressedChange={handleStarToggle}
+                    >
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={isStarred ? 'starred' : 'unstarred'}
+                                initial={{ scale: 1 }}
+                                animate={isStarred ? 'active' : 'inactive'}
+                                variants={starVariants}
+                                style={{ display: 'inline-block' }}
+                            >
+                                {isStarred ? (
+                                    <TiStarFullOutline className="text-purple-500 h-4 w-4 md:h-5 md:w-5" />
+                                ) : (
+                                    <TiStarOutline className="text-black h-4 w-4 md:h-5 md:w-5" />
+                                )}
+                            </motion.div>
+                        </AnimatePresence>
+                    </Toggle>
+                    <Toggle
+                        variant="outline"
+                        className="bg-white"
+                        pressed={isLiked}
+                        onPressedChange={handleLikeToggle}
+                    >
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={isLiked ? 'liked' : 'unliked'}
+                                initial={{ scale: 1 }}
+                                animate={isLiked ? 'liked' : 'unliked'}
+                                variants={heartVariants}
+                                style={{ display: 'inline-block' }}
+                            >
+                                {isLiked ? (
+                                    <AiFillHeart className="text-purple-500 h-4 w-4 md:h-5 md:w-5" />
+                                ) : (
+                                    <AiOutlineHeart className="text-black h-4 w-4 md:h-5 md:w-5" />
+                                )}
+                            </motion.div>
+                        </AnimatePresence>
+                        <span className="pl-1 text-sm md:text-md">
+                            {likeCount}
+                        </span>
+                    </Toggle>
+                </div>
+                <div>
+                    <PreModal 
+                        jobTitle={currentCardData?.jobTitle} 
+                        companyName={currentCardData?.companyName} 
+                        tags={currentCardData?.tags} 
+                        testId={cardData?.testId} 
+                        InterviewId={InterviewCardData?.InterviewId}  
+                        isInterview={isInterview} 
+                    />
+                </div>
+            </div>
+        </div>
+    </CardBody>
+</Card>
+
     );
 }
