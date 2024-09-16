@@ -264,13 +264,14 @@ import Header from "./components/Header";
 import { TestTables } from "./components/TestTables";
 import { Leaderboard } from "./components/Leaderboard";
 import Heading from "@/components/ui/Heading";
-import { useQuery } from 'convex/react';
+import { useMutation, useQueries, useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useLoader } from "../LoaderContext";
 // import Loader from "@/components/ui/Loader";
 
 
 import dynamic from 'next/dynamic';
+import Modal from "@/components/ui/FileModal";
 
 const Loader = dynamic(() => import('@/components/ui/Loader'), { ssr: false });
 const Meter = dynamic(() => import('./components/Meter'), { ssr: false });
@@ -300,6 +301,13 @@ const Dashboard = () => {
   const UserInterviewHistory = useQuery(api.GetHistory.getInterviewHistoryById, { userId: userId || '' });
   console.log("UserTestHistory", UserTestHistory);
 
+  const ResumeFiles = useQuery(api.fetchFiles.FetchResumeFiles, { userId: userId || '' })
+  console.log("FetchResumeFiles : ", ResumeFiles)
+
+  const generateUploadUrl = useMutation(api.uploadPdF.generateUploadUrl)
+  const saveFile = useMutation(api.uploadPdF.saveFile)
+
+
   const percentage = getUserLeaderboardData?.totalAccuracy;
 
   const { showLoader, hideLoader } = useLoader();
@@ -307,6 +315,54 @@ const Dashboard = () => {
   const [dailyStreak, setDailyStreak] = useState<number>();
   const [maxStreak, setMaxStreak] = useState<number>();
 
+  //
+  
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  // const [files, setFiles] = useState<File[]>([]);
+
+  const handleFileUpload = async (uploadedFiles: any) => {
+    // Ensure uploadedFiles is not empty
+    if (uploadedFiles.length > 0) {
+      // Get the first file from the FileList
+      const file = uploadedFiles[0];
+
+      console.log("Uploaded File:", file);
+
+      try {
+        // Generate the upload URL
+        const postUrl = await generateUploadUrl();
+
+        // Send the file to the generated URL
+        const result = await fetch(postUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': file.type },  // Set the correct file type
+          body: file,  // Pass the file as the body
+        });
+
+        // Parse the response to get the storageId
+        const { storageId } = await result.json();
+
+        // Save file details (you may pass userId from context or props)
+        await saveFile({
+          storageId,
+          userId: userId || '', // Ensure userId is available
+          fileName: file.name,  // Name of the uploaded file
+          fileType: file.type,  // Type of the file
+        });
+
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      }
+    } else {
+      console.warn("No files selected for upload.");
+    }
+  };
+
+
+  const handleModalOpen = ()=>{
+     setIsModalOpen(true)
+  }
+// 
   useEffect(() => {
     if (!TotalInteractions && !DailyInteraction && !getUserLeaderboardData && !TopUsers) {
       showLoader();
@@ -416,7 +472,7 @@ const Dashboard = () => {
 
   return (
     <main className="w-full px-10">
-      <Header rank={rank} maxStreak={maxStreak} />
+      <Header rank={rank} maxStreak={maxStreak} handleModalOpen={handleModalOpen}  />
       <Separator className="bg-gray-400" />
       <div className="flex mt-5 flex-col h-full w-full gap-5 p-5 bg-gray-500 bg-clip-padding backdrop-filter backdrop-blur-3xl bg-opacity-10 border border-slate-100 overflow-hidden overflow-x-scroll rounded-xl">
         <div>
@@ -442,6 +498,12 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onUpload={handleFileUpload}
+        ResumeFiles={ResumeFiles}
+      />
       <Loader />
     </main>
   );

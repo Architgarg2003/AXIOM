@@ -39,6 +39,7 @@ import type * as UserLike from "../UserLike.js";
 import type * as createEmbedding from "../createEmbedding.js";
 import type * as create_interview from "../create_interview.js";
 import type * as create_mcq from "../create_mcq.js";
+import type * as fetchFiles from "../fetchFiles.js";
 import type * as getAllFeaturedCards from "../getAllFeaturedCards.js";
 import type * as getAllGeneratedCards from "../getAllGeneratedCards.js";
 import type * as getAll_interviewGeneratedCards from "../getAll_interviewGeneratedCards.js";
@@ -83,6 +84,7 @@ declare const fullApi: ApiFromModules<{
   createEmbedding: typeof createEmbedding;
   create_interview: typeof create_interview;
   create_mcq: typeof create_mcq;
+  fetchFiles: typeof fetchFiles;
   getAllFeaturedCards: typeof getAllFeaturedCards;
   getAllGeneratedCards: typeof getAllGeneratedCards;
   getAll_interviewGeneratedCards: typeof getAll_interviewGeneratedCards;

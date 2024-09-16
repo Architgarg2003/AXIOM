@@ -11,9 +11,10 @@ import { Flame } from 'lucide-react';
 interface HeaderI{
     rank:any;
     maxStreak:any;
+    handleModalOpen:()=>void;
 } 
 
-const Header = ({ rank, maxStreak }: HeaderI) => {
+const Header = ({ rank, maxStreak, handleModalOpen }: HeaderI) => {
 
     const { user } = useUser();
     const router = useRouter();
@@ -29,7 +30,7 @@ const Header = ({ rank, maxStreak }: HeaderI) => {
                     <UserButton />
                 </div>
                 <div className='flex flex-row items-center gap-5'>
-                    <Button className='px-3 py-2 text-white  rounded-full flex items-center w-max gap-3'>
+                    <Button onClick={handleModalOpen} className='px-3 py-2 text-white  rounded-full flex items-center w-max gap-3'>
                         Resume <SquareChartGantt />
                     </Button>
                     <div className='px-3 py-2 text-white bg-[#7C3AED] rounded-full flex items-center w-max gap-3'>

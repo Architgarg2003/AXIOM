@@ -253,6 +253,26 @@ export default defineSchema({
     }),
 
 
+    InterviewCards: defineTable({
+        tags: v.array(v.string()),           // Array of strings for tags
+        difficultyLevel: v.string(),         // String for difficulty level
+        companyName: v.string(),             // String for company name
+        jobTitle: v.string(),                // String for job title
+        createdAt: v.string(),               // String for creation timestamp
+        updatedAt: v.string(),               // String for update timestamp
+        InterviewId: v.string(),                  // String for test ID
+    }),
+
+    featuredInterview: defineTable({
+        QuestionSet: v.array(
+            v.object({
+                question: v.string(),
+            })
+        ),
+        date: v.string(),
+    }),
+
+
 });
 
 
