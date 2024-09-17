@@ -16,7 +16,16 @@ Follow these steps to set up the project on your local machine.
 git clone https://github.com/Architgarg2003/AXIOM/
 ```
 
-### 2. Install Dependencies
+### 2. Switch Directory
+
+Switch to project directory:
+
+```bash
+cd AXIOM/
+```
+
+
+### 3. Install Dependencies
 
 Navigate to the project directory and run:
 
@@ -24,32 +33,23 @@ Navigate to the project directory and run:
 npm install
 ```
 
-### 3. Create Environment File
 
-Create a `.env` file in the root directory of the project. Add your environment-specific variables in this file.
 
-### 4. Start Convex Development Server
+### 4. Create Environment File
 
-Run the following command to start the Convex development server:
+Visit the required websites and get the required API Keys to fill in the `.env`:
 
 ```bash
-npx convex dev
+cp .env.example .env
 ```
 
-### 5. Deploy Convex Application
 
-To deploy your Convex application, use the command:
-
-```bash
-npx convex deploy
-```
-
-### 6. Run the Application
+### 5. Run the Application
 
 Start the development server by running:
 
 ```bash
-npm run dev
+npx next dev --port 80
 ```
 
 ## Team members
