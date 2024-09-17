@@ -340,7 +340,7 @@ const Test = ({  }) => {
           speed="1.75"
           color="#4F2FA0"
         ></l-jelly-triangle>
-        Axiom intelegence creating your test
+        Axiom intelligence creating your test
       </div>
     )
   }
