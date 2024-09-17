@@ -1,15 +1,19 @@
+# Axiom - AI-powered Interview Prep Platform
 
+Axiom is a dynamic platform designed to help undergraduates and freshers prepare for interviews with personalized AI-generated tests, immersive interview simulations, and real-time feedback. Built on cutting-edge technologies like **Next.js**, **Convex.dev**, and **LiveKit**, Axiom offers a seamless, interactive experience to make interview preparation both effective and engaging.
 
-# Project Setup
+[![Visit Axiom](https://img.shields.io/badge/Visit%20Axiom-Click%20Here-blue?style=for-the-badge)](https://axiom-lyart.vercel.app/)
 
-## Getting Started
+---
+
+## Project Setup
 
 Follow these steps to set up the project on your local machine.
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/CONVEX-Trailblazers/frontEnd
+git clone https://github.com/Architgarg2003/AXIOM/
 ```
 
 ### 2. Install Dependencies
@@ -40,8 +44,17 @@ To deploy your Convex application, use the command:
 npx convex deploy
 ```
 
-### 6. RUN
+### 6. Run the Application
+
+Start the development server by running:
 
 ```bash
 npm run dev
 ```
+
+## Team members
+
+#### Ayush Dhiman
+####
+####
+####
