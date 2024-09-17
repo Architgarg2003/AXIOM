@@ -34,7 +34,7 @@ The company prefers the difficulty level of the questions to be ${args.difficult
 
 You as a bot, which knows about the company, and the company data and background and everything relevant to its existence hs already being fed into your training set, you have to craft 15-20 Multiple choice based questions. The provided ${args.resume} should be used as a reference on what the candidate knows and where he stands as per the set standards.
 The questions asked should be to judge the candidate for the job role on the basic of the job description according to the company standards and should be somewhat referred to the candidate's resume. The options given for the MCQs should be strategical, and should by themselves be a little tricky and must make the candidate to use their brain.
-Please provide the output in the following JSON format without any additional formatting or markdown:
+Please provide the output in the following JSON format without any additional formatting or markdown And Make sure to start the answer index from 1:
       [
         {
           "question": (Question in a sentence or two),
