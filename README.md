@@ -56,5 +56,5 @@ npx next dev --port 80
 
 #### Ayush Dhiman
 #### Adarsh Kumar Gupta
-####
+#### Archit Garg 
 ####
