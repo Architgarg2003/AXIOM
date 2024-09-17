@@ -21,12 +21,11 @@ export default async function DashboardLayout({
         <div className="flex overflow-hidden">
             <LoaderProvider>
                 <SidebarDemo>
-                    <div className="flex-1 h-screen overflow-y-scroll overflow-hidden rounded-l-xl bg-gray-200">
+                    <div className="flex-1 h-screen overflow-y-scroll overflow-hidden rounded-l-xl bg-gray-200 ">
                         {children}
                        
                     </div>
                 </SidebarDemo>
-                <Loader />
             </LoaderProvider>
         </div>
 
