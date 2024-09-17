@@ -75,7 +75,7 @@ function Home(): JSX.Element {
                   AI-Powered Job Prep Companion
                 </h1>
                 <p className='jos slide-from-bottom mb-11 max-w-[700px] text-lg font-semibold sm:text-xl xl:max-w-[980px]'>
-                  Elevate Your Job Preparation with AI Transform your interview practice and skill assessments with Axiom's AI-driven platform. Get personalized tests and detailed feedback based on your resume and job description.
+                Transform your interview practice and skill assessments with Axiom's AI-driven platform. Get personalized test interviews and detailed feedback based on your resume and job description.
                 </p>
                 <div
                   className='jos flex flex-wrap justify-center gap-6'
@@ -94,7 +94,7 @@ function Home(): JSX.Element {
                 data-jos_animation='zoom'
               >
                 <Image
-                  src='/assets/img_placeholder/th-1/h3.png'
+                  src='/assets/img_placeholder/th-1/1.png'
                   alt='hero-dashboard'
                   width={1296}
                   height={640}
@@ -166,12 +166,12 @@ function Home(): JSX.Element {
 
                   <h3 className='mb-4 block text-xl leading-tight -tracking-[0.5px] group-hover:text-white xl:text-2xl xxl:text-[28px]'>
                     <span className='hover:text-[#AE67FBFF]'>
-                      Proctored Interview Environment
+                    Simulated Interview Environment
                     </span>
                   </h3>
 
                   <p className='mb-12 duration-300 group-hover:text-white'>
-                    Prepare in a real-world setting with our proctored environment, where you can simulate interviews with camera access and real-time monitoring.
+                    Prepare in a real-world setting with our simulated interview environment, featuring camera access and real-time audio and video streaming for an authentic interview experience.
                   </p>
                 </li>
                 <li className='group bg-white p-[30px] transition-all duration-300 ease-in-out hover:bg-black'>
@@ -333,7 +333,7 @@ function Home(): JSX.Element {
                   </div>
                   <div className='text-lg leading-[1.4] lg:text-[21px]'>
                     <p className='mb-7 last:mb-0'>
-                      Axiom makes advanced AI-powered job preparation accessible to everyone—whether you are an undergraduate, a fresher, or part of a small to medium-sized business. No need for specialized resources or expertise.
+                      Axiom makes advanced AI-powered job preparation accessible to everyone—whether you are an undergraduate, or a fresher.
                     </p>
                     <p className='mb-7 last:mb-0'>
                       Axiom provides personalized assessments and skill development to anyone looking to advance their career.
@@ -355,7 +355,7 @@ function Home(): JSX.Element {
                   data-jos_animation='fade-left'
                 >
                   <Image
-                    src='/assets/img_placeholder/th-1/lb3.png'
+                    src='/assets/img_placeholder/th-1/as3.png'
                     alt='content-image-2'
                     width='526'
                     height='450'
@@ -364,11 +364,11 @@ function Home(): JSX.Element {
                 </div>
                 <div className='jos order-1' data-jos_animation='fade-right'>
                   <div className='mb-6'>
-                    <h2>Instant Access to Job Preparation Tools</h2>
+                    <h2>Axiom Stage: Engage in a Virtual World</h2>
                   </div>
                   <div className='text-lg leading-[1.4] lg:text-[21px]'>
                     <p className='mb-7 last:mb-0'>
-                      Axiom’s solutions are designed for fast implementation, allowing users to immediately start benefiting from AI-powered tests without long setup times. Our ready-to-use system delivers a seamless experience so you can focus on honing your skills and preparing for interviews.
+                    Step into Axiom Stage, where users become dinosaurs in an interactive game, allowing them to connect and communicate in a fun, virtual space. Chat via text or voice with spatial audio, and experience a dynamic networking environment.
                     </p>
                     <ul className='flex flex-col gap-y-5 font-dmSans text-xl leading-tight tracking-tighter text-black lg:mt-12 lg:text-[28px]'>
                       <li className='flex items-start gap-x-3'>
@@ -381,7 +381,7 @@ function Home(): JSX.Element {
                             className='h-full w-full'
                           />
                         </div>
-                        Ready-to-use AI tools
+                        Transform into a dinosaur avatar  
                       </li>
                       <li className='flex items-start gap-x-3'>
                         <div className='mt-[2.5px] h-[30px] w-[30px]'>
@@ -393,7 +393,7 @@ function Home(): JSX.Element {
                             className='h-full w-full'
                           />
                         </div>
-                        Easy integration for personalized testing
+                        Chat and talk with spatial audio  
                       </li>
                       <li className='flex items-start gap-x-3'>
                         <div className='mt-[2.5px] h-[30px] w-[30px]'>
@@ -405,7 +405,7 @@ function Home(): JSX.Element {
                             className='h-full w-full'
                           />
                         </div>
-                        Time-efficient assessments that save you both effort and cost
+                        Meet and network in a shared virtual map
                       </li>
                     </ul>
                   </div>

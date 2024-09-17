@@ -72,7 +72,7 @@ export const DPad = ({ onInput }: Props) => {
       onTouchEnd={onTouchUp}
     >
       <img
-  src="/d-pad.png"
+  src="/d-pad.svg"
   alt="D-Pad"
   className="absolute top-0 left-0 right-0 bottom-0 touch-none"
 />
