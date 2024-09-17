@@ -14,14 +14,6 @@ export function BottomBar() {
           <MicrophoneSelector />
         </div>
       </div>
-      {/* <div className="pr-2 flex">
-        {!mobile && (
-          <div className="pr-2">
-            <GithubLink />
-          </div>
-        )}
-        <PoweredByLiveKit />
-      </div> */}
     </div>
   );
 }

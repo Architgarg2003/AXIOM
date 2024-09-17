@@ -12,6 +12,9 @@ import { Joystick, LayoutDashboard } from 'lucide-react';
 import { BookOpenCheck } from 'lucide-react';
 import { Speech } from 'lucide-react';
 import { ListStart } from 'lucide-react';
+import { TiStarOutline, TiStarFullOutline } from "react-icons/ti";
+
+
 interface SidebarProps {
     children: React.ReactNode;
 }
@@ -21,6 +24,11 @@ export function SidebarDemo({ children }: SidebarProps) {
     const [open, setOpen] = useState(false);
 
     const links = useMemo(() => [
+        {
+            label: "Dashboard",
+            href: "/dashboard",
+            icon: <LayoutDashboard className="text-white dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
+        },
         {
             label: "Test",
             href: "/exploreTest",
@@ -32,14 +40,9 @@ export function SidebarDemo({ children }: SidebarProps) {
             icon: <Speech className="text-white dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
         },
         {
-            label: "Dashboard",
-            href: "/dashboard",
-            icon: <LayoutDashboard className="text-white dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
-        },
-        {
-            label: "Wishlist",
+            label: "Bucketlist",
             href: "/wishlist",
-            icon: <ListStart className="text-white dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
+            icon: <TiStarOutline className="text-white dark:text-neutral-200 h-5 w-5 flex-shrink-0" />,
         },
         {
             label: "Stage",

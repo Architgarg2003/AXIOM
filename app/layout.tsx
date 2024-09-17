@@ -22,32 +22,6 @@ const fontSans = FontSans({
     subsets: ["latin"],
     variable: "--font-sans",
  })
-// const DMSans = localFont({
-//     src: '../fonts/DMSans-Bold.woff2',
-//     variable: '--font-DMSans',
-// });
-
-// const ClashDisplay = localFont({
-//     src: '../fonts/ClashDisplay-Medium.woff2',
-//     variable: '--font-clash-display',
-// });
-
-// const Raleway = localFont({
-//     src: '../fonts/Raleway-Bold.woff2',
-//     variable: '--font-raleway',
-// });
-
-// const SpaceGrotesk = localFont({
-//     src: '../fonts/SpaceGrotesk-Bold.woff2',
-//     variable: '--font-space-grotesk',
-// });
-
-// const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-
-// export const metadata = {
-//     title: 'Axiom',
-//     description: 'An example of using Convex with Clerk in a Next.js App Router application',
-// }
 
 export default function RootLayout({
     children,

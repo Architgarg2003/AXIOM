@@ -107,20 +107,6 @@ export default function Page() {
                     selectedCharacter={selectedCharacter}
                     onSelectedCharacterChange={setSelectedCharacter}
                 />
-                {/* <UsernameInput
-                    submitText="Join Room"
-                    onSubmit={async (username) => {
-                        try {
-                            // TODO unify this kind of pattern across examples, either with the `useToken` hook or an equivalent
-                            const connectionDetails = await requestConnectionDetails(
-                                username
-                            );
-                            setConnectionDetails(connectionDetails);
-                        } catch (e: any) {
-                            toast.error(e);
-                        }
-                    }}
-                /> */}
                 <Button className="h-10 w-80 bg-black text-white mt-3" onClick={HandleJoin}>
                     Join Now
                 </Button>
