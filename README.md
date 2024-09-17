@@ -55,6 +55,6 @@ npm run dev
 ## Team members
 
 #### Ayush Dhiman
-####
+#### Adarsh Kumar Gupta
 ####
 ####
