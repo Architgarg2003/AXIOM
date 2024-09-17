@@ -21,12 +21,12 @@ const Modals = ({ head, alert, action, button, action2 }: ModalI) => {
                     >
                         {button}
                     </button>
-                    <button
+                    {/* <button
                         onClick={action2}
                         className="px-4 py-2 bg-red-400 text-white rounded-lg"
                     >
                         END
-                    </button>
+                    </button> */}
                 </div>
             </div>
         </div>
